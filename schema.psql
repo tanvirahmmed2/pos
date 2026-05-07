@@ -1,0 +1,430 @@
+never change schema
+-- =====================================================
+-- TENANTS
+-- =====================================================
+CREATE TABLE tenants (
+  tenant_id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+
+  owner_id INT REFERENCES users(user_id),
+
+  domain TEXT UNIQUE,
+  subdomain TEXT UNIQUE,
+
+  status TEXT DEFAULT 'active'
+    CHECK (status IN ('active','suspended','expired')),
+
+  expires_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE tenant_users (
+  id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+  user_id INT REFERENCES users(user_id),
+
+  role TEXT DEFAULT 'member'
+    CHECK (role IN ('owner','admin','member')),
+
+  created_at TIMESTAMP DEFAULT now(),
+  UNIQUE(tenant_id, user_id)
+);
+
+-- =====================================================
+-- WEBSITES
+-- =====================================================
+CREATE TABLE public.websites (
+  website_id SERIAL PRIMARY KEY,
+
+  tenant_id INTEGER REFERENCES tenants(tenant_id),
+
+  name TEXT,
+  domain TEXT UNIQUE,
+  theme TEXT,
+
+  status TEXT DEFAULT 'development'
+    CHECK (status IN ('active','development','maintenance','suspended')),
+
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now(),
+
+  -- Business Info
+  business_name TEXT,
+  logo TEXT,
+  favicon TEXT,
+
+  -- Contact
+  email TEXT,
+  phone TEXT,
+  address TEXT,
+  city TEXT,
+  country TEXT,
+
+  -- SEO
+  meta_title TEXT,
+  meta_description TEXT,
+
+
+  -- Social
+  facebook TEXT,
+  instagram TEXT,
+  linkedin TEXT,
+  youtube TEXT,
+
+  -- UI
+  primary_color TEXT DEFAULT '#10b981',
+  secondary_color TEXT DEFAULT '#ffffff',
+
+  -- Flags
+  is_public BOOLEAN DEFAULT TRUE,
+  is_store_enabled BOOLEAN DEFAULT TRUE
+);
+
+
+-- =====================================================
+CREATE TABLE subscriptions (
+  subscription_id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users(user_id),
+  package_id INT REFERENCES packages(package_id),
+  tenant_id INT,
+
+  purchase_id INT REFERENCES purchases(purchase_id),
+
+  stripe_subscription_id TEXT UNIQUE,
+
+  status TEXT DEFAULT 'active'
+    CHECK (status IN ('active','past_due','canceled','unpaid','trialing','expired','refunded','pending')),
+
+  current_period_start TIMESTAMP DEFAULT now(),
+  current_period_end TIMESTAMP,
+
+  cancel_at_period_end BOOLEAN DEFAULT FALSE,
+  is_lifetime BOOLEAN DEFAULT FALSE,
+
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
+
+
+-- =====================================================
+-- USERS (STAFF / ADMIN)
+-- =====================================================
+CREATE TABLE ecom_users (
+  user_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) UNIQUE NOT NULL,
+  phone VARCHAR(20),
+
+  password TEXT NOT NULL,
+
+  role TEXT DEFAULT 'user'
+    CHECK (role IN ('admin','manager','sales','user')),
+
+  is_active BOOLEAN DEFAULT TRUE,
+
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- CUSTOMERS
+-- =====================================================
+CREATE TABLE ecom_customers (
+  customer_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  name VARCHAR(100),
+  phone VARCHAR(20) NOT NULL,
+  email VARCHAR(100),
+  address TEXT,
+
+  created_at TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- CATEGORIES
+-- =====================================================
+CREATE TABLE ecom_categories (
+  category_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+parent_id INT REFERENCES ecom_categories(category_id) ON DELETE CASCADE;
+  name VARCHAR(100) NOT NULL,
+
+  created_at TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- BRANDS
+-- =====================================================
+CREATE TABLE ecom_brands (
+  brand_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  name VARCHAR(100) NOT NULL,
+  description TEXT,
+
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- PRODUCTS
+-- =====================================================
+CREATE TABLE ecom_products (
+  product_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  category_id INT REFERENCES ecom_categories(category_id),
+  brand_id INT REFERENCES ecom_brands(brand_id),
+
+  name VARCHAR(150) NOT NULL,
+  slug VARCHAR(150),
+
+  description TEXT,
+
+  purchase_price NUMERIC(10,2),
+  sale_price NUMERIC(10,2),
+  discount_price NUMERIC(10,2) DEFAULT 0,
+
+  wholesale_price NUMERIC(10,2),
+  dealer_price NUMERIC(10,2) DEFAULT 0,
+  retail_price NUMERIC(10,2) DEFAULT 0,
+
+  image TEXT,
+  image_id VARCHAR(255),
+
+  stock INT DEFAULT 0,
+
+  unit VARCHAR(50),
+  barcode TEXT,
+
+  is_active BOOLEAN DEFAULT TRUE,
+
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- SUPPLIERS
+-- =====================================================
+CREATE TABLE ecom_suppliers (
+  supplier_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  name VARCHAR(200),
+  company_name VARCHAR(200),
+
+  phone VARCHAR(20),
+  email VARCHAR(150),
+
+  address TEXT,
+
+  is_active BOOLEAN DEFAULT TRUE,
+
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- PURCHASES (STOCK IN)
+-- =====================================================
+CREATE TABLE ecom_purchases (
+  purchase_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  supplier_id INT REFERENCES ecom_suppliers(supplier_id),
+
+  supplier_name VARCHAR(200),
+  supplier_phone VARCHAR(20),
+
+  invoice_no VARCHAR(100),
+
+  subtotal_amount NUMERIC(10,2) DEFAULT 0,
+  extra_discount NUMERIC(10,2) DEFAULT 0,
+  total_amount NUMERIC(10,2) DEFAULT 0,
+
+  payment_method VARCHAR(50),
+  transaction_id VARCHAR(100),
+
+  note TEXT,
+
+  created_at TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- PURCHASE ITEMS
+-- =====================================================
+CREATE TABLE ecom_purchase_items (
+  id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  purchase_id INT REFERENCES ecom_purchases(purchase_id) ON DELETE CASCADE,
+  product_id INT REFERENCES ecom_products(product_id),
+
+  quantity INT NOT NULL,
+  purchase_price NUMERIC(10,2) NOT NULL
+);
+
+-- =====================================================
+-- PURCHASE PAYMENTS
+-- =====================================================
+CREATE TABLE ecom_purchase_payments (
+  payment_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  purchase_id INT REFERENCES ecom_purchases(purchase_id),
+
+  payment_method VARCHAR(50),
+  amount_paid NUMERIC(10,2),
+
+  transaction_id VARCHAR(100),
+
+  payment_date TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- ORDERS (SALES)
+-- =====================================================
+CREATE TABLE public.ecom_orders (
+  order_id SERIAL PRIMARY KEY,
+
+  tenant_id INTEGER,
+  customer_id INTEGER,
+
+  phone VARCHAR(20) NOT NULL,
+
+  status VARCHAR(30) DEFAULT 'pending',
+
+  subtotal_amount NUMERIC(10, 2),
+  total_discount_amount NUMERIC(10, 2) DEFAULT 0,
+  total_amount NUMERIC(10, 2),
+
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+
+  CONSTRAINT ecom_orders_customer_id_fkey
+    FOREIGN KEY (customer_id)
+    REFERENCES ecom_customers (customer_id),
+
+  CONSTRAINT ecom_orders_tenant_id_fkey
+    FOREIGN KEY (tenant_id)
+    REFERENCES tenants (tenant_id),
+
+  CONSTRAINT ecom_orders_status_check
+    CHECK (
+      status IN (
+        'pending',
+        'confirmed',
+        'processing',
+        'shipped',
+        'out_for_delivery',
+        'delivered',
+        'cancelled',
+        'returned',
+        'failed'
+      )
+    )
+) 
+
+-- =====================================================
+-- ORDER ITEMS
+-- =====================================================
+CREATE TABLE ecom_order_items (
+  order_item_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  order_id INT REFERENCES ecom_orders(order_id) ON DELETE CASCADE,
+  product_id INT REFERENCES ecom_products(product_id),
+
+  quantity INT NOT NULL,
+  price NUMERIC(10,2) NOT NULL
+);
+
+-- =====================================================
+-- PAYMENTS (CUSTOMER)
+-- =====================================================
+CREATE TABLE ecom_payments (
+  payment_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  order_id INT REFERENCES ecom_orders(order_id),
+
+  payment_method VARCHAR(50),
+  amount NUMERIC(10,2),
+
+  payment_status VARCHAR(30) DEFAULT 'pending',
+
+  transaction_id VARCHAR(100),
+
+  amount_received NUMERIC(10,2) DEFAULT 0,
+  change_amount NUMERIC(10,2) DEFAULT 0,
+
+  paid_at TIMESTAMP DEFAULT now()
+);
+
+-- =====================================================
+-- SUPPORT
+-- =====================================================
+CREATE TABLE ecom_supports (
+  support_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  name VARCHAR(100),
+  email VARCHAR(100),
+  subject VARCHAR(200),
+  message TEXT,
+
+  created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE ecom_inventory_logs (
+  log_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  product_id INT REFERENCES ecom_products(product_id),
+
+  type TEXT CHECK (type IN ('purchase','sale','adjustment','return')),
+  quantity INT NOT NULL,
+
+  reference_id INT, -- order_id or purchase_id
+  note TEXT,
+
+  created_at TIMESTAMP DEFAULT now()
+);
+
+
+CREATE TABLE ecom_refunds (
+  refund_id SERIAL PRIMARY KEY,
+  tenant_id INT REFERENCES tenants(tenant_id),
+
+  order_id INT REFERENCES ecom_orders(order_id),
+
+  amount NUMERIC(10,2),
+  reason TEXT,
+
+  status TEXT DEFAULT 'pending'
+    CHECK (status IN ('pending','approved','rejected')),
+
+  created_at TIMESTAMP DEFAULT now()
+);
+
+
+CREATE TABLE ecom_reviews (
+  review_id SERIAL PRIMARY KEY,
+
+  tenant_id INT REFERENCES tenants(tenant_id) ON DELETE CASCADE,
+  user_id INT REFERENCES ecom_users(user_id) ON DELETE SET NULL,
+
+  rating INT NOT NULL
+    CHECK (rating BETWEEN 1 AND 5),
+
+  title VARCHAR(150),
+  comment TEXT,
+
+  is_approved BOOLEAN DEFAULT TRUE,
+
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);

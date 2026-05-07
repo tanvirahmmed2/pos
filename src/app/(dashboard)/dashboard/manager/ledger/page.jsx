@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MainHome = () => {
+const LedgerPage = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const MainHome = () => {
   )
 }
 
-export default MainHome
+export default LedgerPage
