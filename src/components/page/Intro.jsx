@@ -67,20 +67,7 @@ const Intro = () => {
                     </p>
                 </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.8 }}
-                    className='w-full flex items-center justify-center md:gap-10 flex-col gap-4 md:flex-row'
-                >
-                    <Link href='/products' className='w-full sm:w-auto group px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-3 hover:bg-primary transition-all active:scale-95'>
-                        Shop Now
-                        <ArrowRight size={18} className='group-hover:translate-x-1 transition-transform' />
-                    </Link>
-                    <Link href='/offers' className='w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-2xl font-bold text-sm hover:bg-slate-50 transition-all active:scale-95 text-center'>
-                        View Offers
-                    </Link>
-                </motion.div>
+               
             </div>
 
         </div>

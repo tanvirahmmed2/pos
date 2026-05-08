@@ -37,56 +37,30 @@ const Navbar = () => {
       className='w-full fixed top-0 left-0 right-0 z-50'
     >
       <nav className='w-full flex flex-row items-center justify-between h-14 px-4 bg-white border-b-2 border-slate-100 shadow-sm'>
-       
+
         <Link href={'/'} className='flex items-center gap-2 group'>
 
           <span className='text-2xl font-black tracking-tight text-slate-900 uppercase '>
             {siteData?.website_name}
           </span>
         </Link>
-        <div className='hidden md:flex items-center justify-center w-auto gap-0.5'>
-          <NavLink href='/' icon={<HomeIcon size={16} />} label='Home' active={pathname === '/'} />
-          <NavLink href='/offers' icon={<Tag size={16} />} label='Offers' active={pathname === '/offers'} />
-          <NavLink href='/products' icon={<Package size={16} />} label='Products' active={pathname === '/products'} />
-        </div>
-        <div className='flex flex-row items-center gap-1 sm:gap-3'>
 
 
-          <div className='flex items-center gap-1.5 sm:gap-2'>
+        <div className='flex items-center gap-1.5 sm:gap-2'>
 
+
+
+          {isLoggedIn ? (
+            <UserMenu userData={userData} handleLogout={handleLogout} />
+          ) : (
             <Link
-              href={'/search'}
-              className='p-2 rounded-full hover:bg-sky-50 text-slate-600 transition-colors'
-              aria-label="Search"
+              href={'/login'}
+              className='flex items-center gap-2 px-4 py-1.5 bg-black text-white rounded-full font-semibold text-sm hover:bg-gray-800 transition-all shadow-sm active:scale-95'
             >
-              <SearchIcon size={19} />
+              <User size={15} />
+              <span className='hidden sm:inline'>Login</span>
             </Link>
-
-            <Link
-              href={'/cart'}
-              className='relative p-2 rounded-full hover:bg-sky-50 text-slate-600 transition-colors'
-              aria-label="Cart"
-            >
-              <ShoppingCart size={19} />
-              {cartCount > 0 && (
-                <span className='absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1'>
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-
-            {isLoggedIn ? (
-              <UserMenu userData={userData} handleLogout={handleLogout} />
-            ) : (
-              <Link
-                href={'/login'}
-                className='flex items-center gap-2 px-4 py-1.5 bg-black text-white rounded-full font-semibold text-sm hover:bg-gray-800 transition-all shadow-sm active:scale-95'
-              >
-                <User size={15} />
-                <span className='hidden sm:inline'>Login</span>
-              </Link>
-            )}
-          </div>
+          )}
         </div>
       </nav>
     </motion.div>
@@ -98,8 +72,8 @@ const NavLink = ({ href, icon, label, active }) => (
   <Link
     href={href}
     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium transition-all text-sm ${active
-        ? 'text-black bg-slate-100 font-bold'
-        : 'text-slate-600 hover:text-black hover:bg-slate-50'
+      ? 'text-black bg-slate-100 font-bold'
+      : 'text-slate-600 hover:text-black hover:bg-slate-50'
       }`}
   >
     {icon}
