@@ -1,10 +1,10 @@
 'use client'
 import Link from 'next/link'
 import FooterTagline from './FooterTagline'
-import Image from 'next/image';
-import { Facebook, Instagram, Linkedin, Youtube, Mail, Phone, MapPin } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
 import { Context } from '../helper/Context';
 import { useContext } from 'react';
+import { FaYoutube } from 'react-icons/fa6';
 
 const Footer = () => {
   const { siteData } = useContext(Context)
@@ -23,10 +23,10 @@ const Footer = () => {
             {siteData?.meta_description || 'Your one-stop shop for premium quality variety products. We bring excellence to your doorstep with every purchase.'}
           </p>
           <div className='flex items-center gap-4 mt-2'>
-            {siteData?.facebook && <SocialIcon icon={<Facebook size={18} />} href={siteData.facebook} />}
+            {/* {siteData?.facebook && <SocialIcon icon={<Facebook size={18} />} href={siteData.facebook} />}
             {siteData?.instagram && <SocialIcon icon={<Instagram size={18} />} href={siteData.instagram} />}
             {siteData?.linkedin && <SocialIcon icon={<Linkedin size={18} />} href={siteData.linkedin} />}
-            {siteData?.youtube && <SocialIcon icon={<Youtube size={18} />} href={siteData.youtube} />}
+            {siteData?.youtube && <SocialIcon icon={<FaYoutube size={18} />} href={siteData.youtube} />} */}
           </div>
         </div>
 
