@@ -17,7 +17,7 @@ const SupplierPage = () => {
         </div>
         <button 
           onClick={() => setIsSupplierBox(true)}
-          className='flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm shadow-sky-200 active:scale-95 whitespace-nowrap'
+          className='flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm shadow-slate-200 active:scale-95 whitespace-nowrap'
         >
           <RiAddLine size={20} />
           <span>Add New Supplier</span>
@@ -49,12 +49,12 @@ const SupplierPage = () => {
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h2 className="font-bold text-slate-800 group-hover:text-sky-600 transition-colors">
+                      <h2 className="font-bold text-slate-800 group-hover:text-slate-900 transition-colors">
                         {supplier.name}
                       </h2>
                       <p className="text-xs text-slate-500 font-medium mt-0.5">{supplier.phone}</p>
                     </div>
-                    <span className="bg-sky-50 text-sky-600 text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-wider">
+                    <span className="bg-slate-50 text-slate-900 text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-wider">
                       Vendor
                     </span>
                   </div>
@@ -67,7 +67,7 @@ const SupplierPage = () => {
                     
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-semibold text-slate-400 uppercase">Investment</span>
-                      <span className="text-sm font-bold text-emerald-600">
+                      <span className="text-sm font-bold text-slate-900">
                         ৳{totalSpent.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                       </span>
                     </div>

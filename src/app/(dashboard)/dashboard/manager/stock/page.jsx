@@ -22,7 +22,7 @@ const StockReport = () => {
         fetchStockData()
     }, [])
 
-    if (loading) return <div className='w-full min-h-screen flex items-center justify-center font-medium text-sky-400 uppercase tracking-widest text-xs'>Analyzing Inventory...</div>
+    if (loading) return <div className='w-full min-h-screen flex items-center justify-center font-medium text-slate-400 uppercase tracking-widest text-xs'>Analyzing Inventory...</div>
 
     const currentList = viewMode === 'low' ? data?.lowStock : data?.highStock
 
@@ -48,7 +48,7 @@ const StockReport = () => {
                 </div>
 
                 <div className='p-6 bg-white border border-slate-100 rounded-2xl shadow-sm flex flex-col gap-4'>
-                    <div className='w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600'>
+                    <div className='w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-900'>
                         <TrendingUp size={24} />
                     </div>
                     <div>
@@ -70,7 +70,7 @@ const StockReport = () => {
                     <div className='flex bg-slate-100 p-1 rounded-xl w-fit'>
                         <button
                             onClick={() => setViewMode('low')}
-                            className={`px-6 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${viewMode === 'low' ? 'bg-white text-rose-500 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                            className={`px-6 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${viewMode === 'low' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                         >
                             Low Stock
                         </button>
@@ -101,7 +101,7 @@ const StockReport = () => {
                                     </td>
                                     <td className='px-6 py-4 text-sm font-bold text-slate-900'>৳{item.sale_price}</td>
                                     <td className='px-6 py-4 text-right'>
-                                        <span className={`px-3 py-1 rounded-lg text-xs font-bold ${viewMode === 'low' && item.stock < 10 ? 'bg-rose-50 text-rose-600' : 'bg-slate-100 text-slate-600'}`}>
+                                        <span className={`px-3 py-1 rounded-lg text-xs font-bold ${viewMode === 'low' && item.stock < 10 ? 'bg-slate-50 text-slate-900' : 'bg-slate-100 text-slate-600'}`}>
                                             {item.stock}
                                         </span>
                                     </td>

@@ -85,7 +85,7 @@ const SalesListPage = () => {
           <p className='text-sm text-slate-500 mt-1'>View and manage delivered sales orders</p>
         </div>
         <div className='w-full sm:w-80'>
-          <div className='flex items-center gap-2 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200 focus-within:border-sky-400 focus-within:ring-4 focus-within:ring-sky-100/50 transition-all'>
+          <div className='flex items-center gap-2 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200 focus-within:border-slate-400 focus-within:ring-4 focus-within:ring-slate-100/50 transition-all'>
             <FaBarcode className='text-slate-400 text-lg' />
             <input 
               type="text" 
@@ -101,7 +101,7 @@ const SalesListPage = () => {
       {/* Orders List */}
       <div className='w-full flex flex-col gap-4'>
         {loading ? (
-           <p className='text-center text-sky-400 animate-pulse font-bold py-20'>Fetching Sales Data...</p>
+           <p className='text-center text-slate-400 animate-pulse font-bold py-20'>Fetching Sales Data...</p>
         ) : orders.length === 0 ? (
           <div className='w-full h-64 flex flex-col items-center justify-center text-center gap-3 p-6 bg-white rounded-2xl shadow-sm border border-slate-100'>
              <p className='text-slate-600 font-semibold'>No Orders Found</p>
@@ -114,8 +114,8 @@ const SalesListPage = () => {
             <div className='md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-4 flex flex-col justify-center'>
                 <div className='flex items-center gap-2 mb-2'>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${
-                    order.status === 'returned' ? 'bg-rose-100 text-rose-700' :
-                    'bg-emerald-100 text-emerald-700'
+                    order.status === 'returned' ? 'bg-slate-100 text-black' :
+                    'bg-slate-100 text-black'
                   }`}>
                     {order.status || 'Delivered'}
                   </span>
@@ -136,7 +136,7 @@ const SalesListPage = () => {
                         order.items.map((product, pIdx) => (
                             <div key={pIdx} className='flex justify-between items-center text-sm'>
                                 <p className='font-bold text-slate-700 truncate pr-2 flex-1'>
-                                  <span className='text-sky-500 font-black mr-2'>x{product.quantity}</span>
+                                  <span className='text-slate-800 font-black mr-2'>x{product.quantity}</span>
                                   {product.name}
                                 </p>
                                 <p className='font-black text-slate-900'>
@@ -156,13 +156,13 @@ const SalesListPage = () => {
                     <span>Gross Total</span>
                     <span>৳{order.total_amount}</span>
                 </div>
-                <div className='flex justify-between text-xs text-rose-500 font-medium'>
+                <div className='flex justify-between text-xs text-slate-800 font-medium'>
                     <span>Discount</span>
                     <span>- ৳{order.total_discount_amount || 0}</span>
                 </div>
                 <div className='flex justify-between items-center border-t border-slate-200 pt-2 mt-1'>
-                    <span className='text-[10px] font-black text-emerald-600 uppercase tracking-wider'>Total Paid</span>
-                    <span className='text-xl font-black text-emerald-600'>৳{Number(order.paid_amount || order.amount_received || 0).toLocaleString()}</span>
+                    <span className='text-[10px] font-black text-slate-900 uppercase tracking-wider'>Total Paid</span>
+                    <span className='text-xl font-black text-slate-900'>৳{Number(order.paid_amount || order.amount_received || 0).toLocaleString()}</span>
                 </div>
             </div>
 
@@ -172,7 +172,7 @@ const SalesListPage = () => {
                     <div className='flex flex-col gap-2 w-full animate-in fade-in zoom-in duration-200'>
                         <button
                             onClick={() => deleteOrder(order.order_id)}
-                            className='w-full bg-rose-500 hover:bg-rose-600 text-white p-2.5 rounded-xl flex items-center justify-center transition-colors'
+                            className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center transition-colors'
                             title="Confirm Delete"
                         >
                             <FaCheck />
@@ -187,18 +187,18 @@ const SalesListPage = () => {
                     </div>
                 ) : (
                     <div className='w-full grid grid-cols-2 md:grid-cols-1 gap-2'>
-                        <Link href={`/dashboard/sales/pos/${order.order_id}`} className='bg-sky-50 text-sky-600 hover:bg-sky-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="View Invoice">
+                        <Link href={`/dashboard/sales/pos/${order.order_id}`} className='bg-slate-50 text-slate-900 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="View Invoice">
                           <LuView size={18} />
                         </Link>
                         <button onClick={() => generateReceipt(order, siteData)} className='bg-slate-50 text-slate-600 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="Print Receipt">
                           <FaPrint size={18} />
                         </button>
                         {order.status !== 'returned' && (
-                          <button onClick={() => returnOrder(order.order_id)} className='bg-amber-50 text-amber-600 hover:bg-amber-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="Return Order">
+                          <button onClick={() => returnOrder(order.order_id)} className='bg-slate-50 text-slate-900 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="Return Order">
                             <GiReturnArrow size={18} />
                           </button>
                         )}
-                        <button onClick={() => setConfirmDelete(order.order_id)} className='bg-rose-50 text-rose-500 hover:bg-rose-100 p-2.5 rounded-xl flex items-center justify-center transition-colors col-span-2 md:col-span-1' title="Delete Order">
+                        <button onClick={() => setConfirmDelete(order.order_id)} className='bg-slate-50 text-slate-800 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-colors col-span-2 md:col-span-1' title="Delete Order">
                           <MdDelete size={18} />
                         </button>
                     </div>

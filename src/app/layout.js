@@ -9,7 +9,7 @@ export async function generateMetadata() {
   const headersList = await headers();
   const siteData = await getTenant({ headers: headersList });
 
-  const title = siteData?.meta_title || siteData?.website_name || "Nizam Varieties Store";
+  const title = siteData?.meta_title || siteData?.website_name || "Store Name";
   const description = siteData?.meta_description || "Premium Shopping Experience";
 
   return {

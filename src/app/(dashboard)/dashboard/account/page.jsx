@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 const roleBadge = {
-    manager: "bg-indigo-100 text-indigo-800 border-indigo-200",
-    sales:   "bg-emerald-100 text-emerald-800 border-emerald-200",
-    user:    "bg-gray-100 text-gray-700 border-gray-200",
+    manager: "bg-slate-100 text-black border-slate-200",
+    sales:   "bg-slate-100 text-black border-slate-200",
+    user:    "bg-slate-100 text-slate-700 border-slate-200",
 };
 
 export default function AccountPage() {
@@ -84,7 +84,7 @@ export default function AccountPage() {
     if (loading) {
         return (
             <div className="w-full min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-slate-800"></div>
             </div>
         );
     }
@@ -106,7 +106,7 @@ export default function AccountPage() {
                     {/* ── Profile Card ───────────────────────────────────────── */}
                     <div className="lg:col-span-1 space-y-4">
                         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col items-center text-center">
-                            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white text-4xl font-bold shadow-lg mb-4 border-4 border-white ring-2 ring-sky-100">
+                            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-slate-800 to-slate-900 flex items-center justify-center text-white text-4xl font-bold shadow-lg mb-4 border-4 border-white ring-2 ring-slate-100">
                                 {staffInfo?.name?.charAt(0)?.toUpperCase() || "S"}
                             </div>
                             <h2 className="text-xl font-bold text-slate-900">{staffInfo?.name}</h2>
@@ -129,7 +129,7 @@ export default function AccountPage() {
 
                             <button
                                 onClick={handleLogout}
-                                className="mt-6 w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-semibold text-sm border border-red-100 transition-colors"
+                                className="mt-6 w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 font-semibold text-sm border border-slate-100 transition-colors"
                             >
                                 <LogOut className="w-4 h-4" />
                                 Logout
@@ -162,7 +162,7 @@ export default function AccountPage() {
                                                 value={formData.name}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all"
+                                                className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400 transition-all"
                                                 placeholder="Your full name"
                                             />
                                         </div>
@@ -178,7 +178,7 @@ export default function AccountPage() {
                                                 value={formData.email}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all"
+                                                className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400 transition-all"
                                                 placeholder="your@email.com"
                                             />
                                         </div>
@@ -202,7 +202,7 @@ export default function AccountPage() {
                                                     name="password"
                                                     value={formData.password}
                                                     onChange={handleChange}
-                                                    className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all"
+                                                    className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400 transition-all"
                                                     placeholder="••••••••"
                                                 />
                                             </div>
@@ -216,7 +216,7 @@ export default function AccountPage() {
                                                     name="confirmPassword"
                                                     value={formData.confirmPassword}
                                                     onChange={handleChange}
-                                                    className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all"
+                                                    className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400 transition-all"
                                                     placeholder="••••••••"
                                                 />
                                             </div>
@@ -229,7 +229,7 @@ export default function AccountPage() {
                                     <button
                                         type="submit"
                                         disabled={saving}
-                                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm shadow-md shadow-sky-200 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-white rounded-xl font-semibold text-sm shadow-md shadow-slate-200 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
                                         {saving ? (
                                             <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

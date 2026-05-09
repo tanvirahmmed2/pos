@@ -94,7 +94,7 @@ const ProfilePage = () => {
             </div>
             <button
               onClick={handleLogout}
-              className='self-start sm:self-auto flex items-center gap-2 px-4 py-2 bg-red-50 text-red-500 rounded-xl font-bold text-sm hover:bg-red-500 hover:text-white transition-all active:scale-95 border border-red-100'
+              className='self-start sm:self-auto flex items-center gap-2 px-4 py-2 bg-slate-50 text-slate-800 rounded-xl font-bold text-sm hover:bg-slate-800 hover:text-white transition-all active:scale-95 border border-slate-100'
             >
               <LogOut size={15} />
               Logout
@@ -126,14 +126,14 @@ const ProfilePage = () => {
             icon={<ShoppingBag size={20} />}
             label='My Orders'
             desc='View all your purchases and order history'
-            color='from-blue-500 to-indigo-600'
+            color='from-slate-800 to-slate-900'
           />
           <QuickLink
             href='/user/reviews'
             icon={<MdReviews size={20} />}
             label='Reviews'
             desc='Update your name, email, phone, or password'
-            color='from-amber-600 to-amber-800'
+            color='from-slate-900 to-black'
           />
           <QuickLink
             href='/user/settings'

@@ -19,8 +19,8 @@ const MakeFeatured = ({ id ,status}) => {
     }
     return (
         <div className='relative group'>
-            <p className='-top-8 absolute hidden group-hover:block text-red-500 bg-white shadow p-1 rounded-lg'>{!status? 'Featured': 'Remove'}</p>
-            <button onClick={makeFeaturedItem} className='cursor-pointer text-xl'>{!status? <CiStar />: <FaStar className='text-yellow-600'/>} </button>
+            <p className='-top-8 absolute hidden group-hover:block text-slate-800 bg-white shadow p-1 rounded-lg'>{!status? 'Featured': 'Remove'}</p>
+            <button onClick={makeFeaturedItem} className='cursor-pointer text-xl'>{!status? <CiStar />: <FaStar className='text-slate-900'/>} </button>
         </div>
     )
 }

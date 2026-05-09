@@ -35,7 +35,7 @@ const PromoteUserForm = ({ onSuccess, onCancel }) => {
             {/* Header */}
             <div className='flex items-center justify-between p-6 border-b border-slate-100'>
                 <div className='flex items-center gap-2'>
-                    <RiShieldUserLine className='text-sky-500' size={24} />
+                    <RiShieldUserLine className='text-slate-800' size={24} />
                     <h2 className='text-lg font-bold text-slate-800 tracking-tight'>Promote User Role</h2>
                 </div>
                 <button 
@@ -61,7 +61,7 @@ const PromoteUserForm = ({ onSuccess, onCancel }) => {
                             type="email" name='email' id='email' required 
                             placeholder="user@example.com"
                             value={formData.email} onChange={changeHandler} 
-                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all text-sm font-medium text-slate-800' 
+                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-slate-800 focus:ring-4 focus:ring-slate-800/10 transition-all text-sm font-medium text-slate-800' 
                         />
                     </div>
                 </div>
@@ -71,7 +71,7 @@ const PromoteUserForm = ({ onSuccess, onCancel }) => {
                     <select 
                         name="role" id="role" required 
                         value={formData.role} onChange={changeHandler} 
-                        className='w-full border border-slate-200 px-4 py-3 rounded-xl outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all text-sm font-medium text-slate-800 bg-white'
+                        className='w-full border border-slate-200 px-4 py-3 rounded-xl outline-none focus:border-slate-800 focus:ring-4 focus:ring-slate-800/10 transition-all text-sm font-medium text-slate-800 bg-white'
                     >
                         <option value="">Select Role</option>
                         <option value="admin">Admin (Full Access)</option>
@@ -94,7 +94,7 @@ const PromoteUserForm = ({ onSuccess, onCancel }) => {
                 <button 
                     disabled={isSubmitting}
                     type='submit' 
-                    className='px-8 py-2.5 text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-xl transition-colors shadow-lg shadow-sky-200 disabled:opacity-50'
+                    className='px-8 py-2.5 text-sm font-semibold text-white bg-slate-800 hover:bg-slate-900 rounded-xl transition-colors shadow-lg shadow-slate-200 disabled:opacity-50'
                 >
                     {isSubmitting ? 'Processing...' : 'Update Role'}
                 </button>

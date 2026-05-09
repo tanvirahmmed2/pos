@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: var(--color-sky-500);
-  --color-primary-dark: var(--color-sky-600);
-  --color-accent: var(--color-orange-400);
+  --color-primary: var(--color-slate-800);
+  --color-primary-dark: var(--color-slate-900);
+  --color-accent: var(--color-slate-400);
   
   --font-sans: "Inter", "Roboto", "sans-serif";
   --font-serif: "Outfit", "serif";
@@ -11,7 +11,7 @@
 
 @layer base {
   body {
-    @apply text-slate-900 selection:bg-sky-100 selection:text-sky-900;
+    @apply text-slate-900 selection:bg-slate-100 selection:text-black;
   }
   
   h1, h2, h3, h4, h5, h6 {

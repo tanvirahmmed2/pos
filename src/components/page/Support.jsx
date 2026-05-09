@@ -47,7 +47,7 @@ const Support = () => {
             transition={{ duration: 0.5 }}
             className='flex flex-col gap-3'
           >
-            <div className='w-12 h-12 rounded-xl bg-sky-50 flex items-center justify-center text-primary'>
+            <div className='w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-primary'>
               <HelpCircle size={24} />
             </div>
             <h2 className='text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-none'>

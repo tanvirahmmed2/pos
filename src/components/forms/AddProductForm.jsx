@@ -105,8 +105,8 @@ const AddProductForm = () => {
                         />
                         <div className='flex items-center gap-1.5 ml-1 mt-1'>
                             {formData.barcode ? 
-                                <span className='text-[10px] text-emerald-600 font-bold flex items-center gap-1'>✓ Manual Code</span> : 
-                                <span className='text-[10px] text-amber-500 font-bold flex items-center gap-1'>⚡ Auto-generate on save</span>
+                                <span className='text-[10px] text-slate-900 font-bold flex items-center gap-1'>✓ Manual Code</span> : 
+                                <span className='text-[10px] text-slate-800 font-bold flex items-center gap-1'>⚡ Auto-generate on save</span>
                             }
                         </div>
                     </div>
@@ -182,7 +182,7 @@ const AddProductForm = () => {
                         <label htmlFor="discountPrice" className='text-xs font-bold text-slate-500 uppercase tracking-wider ml-1'>Offer Price (Optional)</label>
                         <div className='relative'>
                             <span className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold'>৳</span>
-                            <input type="number" min={0} step="0.01" name='discountPrice' id='discountPrice' value={formData.discountPrice} onChange={handleChange} className='w-full border border-slate-200 bg-slate-50/30 pl-8 pr-4 py-2.5 rounded-xl outline-none focus:border-primary focus:bg-white transition-all text-sm font-bold text-rose-600' />
+                            <input type="number" min={0} step="0.01" name='discountPrice' id='discountPrice' value={formData.discountPrice} onChange={handleChange} className='w-full border border-slate-200 bg-slate-50/30 pl-8 pr-4 py-2.5 rounded-xl outline-none focus:border-primary focus:bg-white transition-all text-sm font-bold text-slate-900' />
                         </div>
                     </div>
                 </div>

@@ -27,11 +27,11 @@ const ProductDetails = ({ product }) => {
                 <div className='relative aspect-square overflow-hidden rounded-3xl bg-slate-50 border border-slate-100 shadow-inner group'>
                     <div className='absolute right-4 top-4 z-10'>
                         {!isOutOfStock ? (
-                            <span className='text-[10px] font-black uppercase tracking-[0.2em] text-white py-2 px-4 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/30'>
+                            <span className='text-[10px] font-black uppercase tracking-[0.2em] text-white py-2 px-4 rounded-full bg-slate-800 shadow-lg shadow-slate-800/30'>
                                 In Stock
                             </span>
                         ) : (
-                            <span className='text-[10px] font-black uppercase tracking-[0.2em] text-white py-2 px-4 rounded-full bg-rose-500 shadow-lg shadow-rose-500/30'>
+                            <span className='text-[10px] font-black uppercase tracking-[0.2em] text-white py-2 px-4 rounded-full bg-slate-800 shadow-lg shadow-slate-800/30'>
                                 Out of Stock
                             </span>
                         )}
@@ -89,7 +89,7 @@ const ProductDetails = ({ product }) => {
                         </div>
                         <div className='text-right'>
                             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Available</p>
-                            <p className={`text-xl font-black ${isOutOfStock ? 'text-rose-500' : 'text-slate-900'}`}>
+                            <p className={`text-xl font-black ${isOutOfStock ? 'text-slate-800' : 'text-slate-900'}`}>
                                 {currentStock} <span className="text-sm font-bold text-slate-400 uppercase ml-0.5">{product.unit}</span>
                             </p>
                         </div>

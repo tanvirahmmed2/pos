@@ -46,7 +46,7 @@ const RolemanagementPage = () => {
       <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100'>
         <div>
           <h1 className='text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-2'>
-            <RiShieldUserLine className='text-sky-500' />
+            <RiShieldUserLine className='text-slate-800' />
             Role Management
           </h1>
           <p className='text-sm text-slate-500 mt-1'>Manage your team and their permissions</p>
@@ -56,12 +56,12 @@ const RolemanagementPage = () => {
             onClick={() => setIsPromoteBox(true)}
             className='flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl font-medium transition-colors active:scale-95 whitespace-nowrap border border-slate-200'
           >
-            <RiUserSharedLine size={20} className='text-sky-500' />
+            <RiUserSharedLine size={20} className='text-slate-800' />
             <span>Promote Existing</span>
           </button>
           <button 
             onClick={() => setIsCreateBox(true)}
-            className='flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-emerald-200 active:scale-95 whitespace-nowrap'
+            className='flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-slate-200 active:scale-95 whitespace-nowrap'
           >
             <RiUserAddLine size={20} />
             <span>Create New</span>
@@ -103,22 +103,22 @@ const RolemanagementPage = () => {
                     </td>
                     <td className='py-4 px-6'>
                       <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
-                        staff.role === 'admin' ? 'bg-rose-50 text-rose-600' :
-                        staff.role === 'manager' ? 'bg-sky-50 text-sky-600' :
-                        'bg-amber-50 text-amber-600'
+                        staff.role === 'admin' ? 'bg-slate-50 text-slate-900' :
+                        staff.role === 'manager' ? 'bg-slate-50 text-slate-900' :
+                        'bg-slate-50 text-slate-900'
                       }`}>
                         {staff.role}
                       </span>
                     </td>
                     <td className='py-4 px-6'>
-                      <span className={`w-2 h-2 rounded-full inline-block mr-2 ${staff.is_active ? 'bg-emerald-500' : 'bg-slate-300'}`}></span>
+                      <span className={`w-2 h-2 rounded-full inline-block mr-2 ${staff.is_active ? 'bg-slate-800' : 'bg-slate-300'}`}></span>
                       <span className='text-sm text-slate-600'>{staff.is_active ? 'Active' : 'Inactive'}</span>
                     </td>
                     <td className='py-4 px-6 text-right'>
                       <button 
                         disabled={loadingId === staff.user_id}
                         onClick={() => removeStaff(staff.user_id)}
-                        className='inline-flex items-center justify-center px-3 py-1.5 rounded-lg text-rose-500 hover:bg-rose-50 transition-colors disabled:opacity-50 text-xs font-bold uppercase'
+                        className='inline-flex items-center justify-center px-3 py-1.5 rounded-lg text-slate-800 hover:bg-slate-50 transition-colors disabled:opacity-50 text-xs font-bold uppercase'
                         title="Demote User"
                       >
                         Demote

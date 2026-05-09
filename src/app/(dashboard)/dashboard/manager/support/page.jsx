@@ -67,7 +67,7 @@ const SupportPage = () => {
                         <div key={e.support_id} className='bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row justify-between gap-6'>
                             <div className='flex flex-col gap-4 flex-1'>
                                 <div className='flex items-center gap-3'>
-                                    <div className='w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center text-sky-600 font-bold'>
+                                    <div className='w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 font-bold'>
                                         {e.name?.[0]?.toUpperCase() || 'C'}
                                     </div>
                                     <div>
@@ -87,13 +87,13 @@ const SupportPage = () => {
                             <div className='flex md:flex-col items-center justify-center gap-2'>
                                 <button 
                                     onClick={() => setReplyingTo(e)}
-                                    className='px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-sm font-bold rounded-xl transition-colors w-full'
+                                    className='px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-sm font-bold rounded-xl transition-colors w-full'
                                 >
                                     Reply
                                 </button>
                                 <button 
                                     onClick={() => removeSupport(e.support_id)}
-                                    className='px-4 py-2 bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white text-sm font-bold rounded-xl transition-colors w-full'
+                                    className='px-4 py-2 bg-slate-50 text-slate-800 hover:bg-slate-800 hover:text-white text-sm font-bold rounded-xl transition-colors w-full'
                                 >
                                     Delete
                                 </button>
@@ -123,13 +123,13 @@ const SupportPage = () => {
                                     value={replyMessage}
                                     onChange={(e) => setReplyMessage(e.target.value)}
                                     placeholder="Write your response here..."
-                                    className='w-full h-40 border border-slate-200 rounded-xl p-4 outline-none focus:border-sky-500 transition-all text-sm'
+                                    className='w-full h-40 border border-slate-200 rounded-xl p-4 outline-none focus:border-slate-800 transition-all text-sm'
                                 />
                             </div>
                             <button 
                                 disabled={isSubmitting}
                                 type='submit'
-                                className='w-full py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl shadow-lg shadow-sky-200 transition-all disabled:opacity-50'
+                                className='w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 transition-all disabled:opacity-50'
                             >
                                 {isSubmitting ? 'Sending Email...' : 'Send Response'}
                             </button>

@@ -68,7 +68,7 @@ export default function ManagerReviews() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
-                <Loader2 className="w-8 h-8 animate-spin text-sky-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-slate-800" />
             </div>
         );
     }
@@ -102,11 +102,11 @@ export default function ManagerReviews() {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
-                                className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row gap-8 items-start hover:border-sky-100 transition-colors"
+                                className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row gap-8 items-start hover:border-slate-100 transition-colors"
                             >
                                 <div className="flex-1 space-y-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-600 font-black">
+                                        <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 font-black">
                                             {review.user_name?.charAt(0) || "U"}
                                         </div>
                                         <div>
@@ -122,7 +122,7 @@ export default function ManagerReviews() {
                                             <Star 
                                                 key={i} 
                                                 size={16} 
-                                                className={i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-200"} 
+                                                className={i < review.rating ? "fill-slate-400 text-slate-400" : "text-slate-200"} 
                                             />
                                         ))}
                                     </div>
@@ -136,14 +136,14 @@ export default function ManagerReviews() {
                                 <div className="flex md:flex-col gap-3 w-full md:w-auto">
                                     <button
                                         onClick={() => handleApprove(review.review_id)}
-                                        className="flex-1 md:w-40 flex items-center justify-center gap-2 px-6 py-3 bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-200"
+                                        className="flex-1 md:w-40 flex items-center justify-center gap-2 px-6 py-3 bg-slate-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-900 transition-all shadow-lg shadow-slate-200"
                                     >
                                         <CheckCircle2 size={16} />
                                         Approve
                                     </button>
                                     <button
                                         onClick={() => handleDelete(review.review_id)}
-                                        className="flex-1 md:w-40 flex items-center justify-center gap-2 px-6 py-3 bg-white text-rose-500 border border-rose-100 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-rose-50 transition-all"
+                                        className="flex-1 md:w-40 flex items-center justify-center gap-2 px-6 py-3 bg-white text-slate-800 border border-slate-100 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all"
                                     >
                                         <Trash2 size={16} />
                                         Delete

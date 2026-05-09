@@ -12,7 +12,7 @@ const DashboardTopbar = () => {
             <div className="flex items-center gap-4">
                 <button
                     onClick={() => setIsDashboardSidebar(!isDashboardSidebar)}
-                    className="p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-100"
+                    className="p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-100"
                     title={isDashboardSidebar ? "Close Sidebar" : "Open Sidebar"}
                 >
                     {isDashboardSidebar ? <CgMenuMotion size={22} /> : <RiMenuLine size={22} />}
@@ -23,7 +23,7 @@ const DashboardTopbar = () => {
             <div className="flex items-center gap-2 sm:gap-4">
                 <button className="p-2 relative rounded-full hover:bg-slate-100 text-slate-600 transition-colors">
                     <RiNotification3Line size={20} />
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-slate-800 rounded-full border-2 border-white"></span>
                 </button>
                 <button className="p-2 hidden sm:block rounded-full hover:bg-slate-100 text-slate-600 transition-colors">
                     <RiSettings3Line size={20} />
@@ -38,7 +38,7 @@ const DashboardTopbar = () => {
                             {userData?.role || 'Admin'}
                         </span>
                     </div>
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500 text-white flex items-center justify-center font-bold shadow-md border border-white">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-slate-800 to-slate-800 text-white flex items-center justify-center font-bold shadow-md border border-white">
                         {(userData?.name?.[0] || 'A').toUpperCase()}
                     </div>
                 </div>

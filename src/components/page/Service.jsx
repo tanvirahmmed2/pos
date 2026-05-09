@@ -53,7 +53,7 @@ const Service = () => {
             key={d.id}
             variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col items-center text-center gap-3 p-5 rounded-2xl border border-gray-100 hover:shadow-md transition-all duration-200"
+            className="flex flex-col items-center text-center gap-3 p-5 rounded-2xl border border-slate-100 hover:shadow-md transition-all duration-200"
           >
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center"
@@ -62,8 +62,8 @@ const Service = () => {
               {d.icon}
             </div>
             <div>
-              <h3 className="text-sm font-bold text-gray-800">{d.title}</h3>
-              <p className="text-[12px] text-gray-400 mt-0.5">{d.description}</p>
+              <h3 className="text-sm font-bold text-slate-800">{d.title}</h3>
+              <p className="text-[12px] text-slate-400 mt-0.5">{d.description}</p>
             </div>
           </motion.div>
         ))}

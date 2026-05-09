@@ -119,8 +119,8 @@ const AddPurchaseForm = () => {
                 
                 <div className="w-full flex flex-row items-center justify-between gap-4 border-b-2 p-4 bg-white z-20">
                     <p className='font-bold'>Find item</p>
-                    <div  className='w-auto flex flex-row items-center justify-between px-2 border border-sky-400'>
-                        <FaBarcode className='text-2xl text-sky-600'/>
+                    <div  className='w-auto flex flex-row items-center justify-between px-2 border border-slate-400'>
+                        <FaBarcode className='text-2xl text-slate-900'/>
                         <input
                         type="text"
                         value={searchTerm}
@@ -137,15 +137,15 @@ const AddPurchaseForm = () => {
                             <div  onClick={() => {
                                         addToPurchase(product);
                                         setSearchTerm('');
-                                    }} key={product.product_id} className="w-full flex flex-row even:bg-gray-200 items-center justify-center p-1">
+                                    }} key={product.product_id} className="w-full flex flex-row even:bg-slate-200 items-center justify-center p-1">
                                 <div className="flex-1">
-                                    <p className="font-bold text-gray-800">{product.name}</p>
-                                    <p className="text-xs text-gray-500 font-mono">{product.barcode || 'No Barcode'}</p>
+                                    <p className="font-bold text-slate-800">{product.name}</p>
+                                    <p className="text-xs text-slate-500 font-mono">{product.barcode || 'No Barcode'}</p>
                                 </div>
-                                <p className="flex-1 text-center font-semibold text-sky-600">৳{product.purchase_price}</p>
+                                <p className="flex-1 text-center font-semibold text-slate-900">৳{product.purchase_price}</p>
                                 
                             </div>
-                        )) : <div className="p-4 text-center text-gray-400">No products found</div>}
+                        )) : <div className="p-4 text-center text-slate-400">No products found</div>}
                     </div>
                 )}
             </div>
@@ -153,62 +153,62 @@ const AddPurchaseForm = () => {
             <form onSubmit={handleSubmit} className="w-full mx-auto p-4 flex flex-col gap-6 bg-white min-h-screen">
                 {/* Header Section */}
                 <div className="flex items-center gap-3 border-b pb-4">
-                    <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl"><FaFileInvoiceDollar size={24} /></div>
+                    <div className="p-3 bg-slate-50 text-slate-900 rounded-2xl"><FaFileInvoiceDollar size={24} /></div>
                     <div>
-                        <h1 className="text-xl font-bold text-gray-800">Product Purchase</h1>
-                        <p className="text-xs text-gray-500">Add stock and record supplier invoice</p>
+                        <h1 className="text-xl font-bold text-slate-800">Product Purchase</h1>
+                        <p className="text-xs text-slate-500">Add stock and record supplier invoice</p>
                     </div>
                 </div>
 
                 {/* Supplier and Invoice Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <div className="flex flex-col gap-1">
-                        <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Supplier</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Supplier</label>
                         <div className="flex gap-2">
-                            <select name="supplier_id" required onChange={handleChange} value={formData.supplier_id} className="w-full bg-white border border-gray-200 p-2 rounded-lg text-sm outline-none">
+                            <select name="supplier_id" required onChange={handleChange} value={formData.supplier_id} className="w-full bg-white border border-slate-200 p-2 rounded-lg text-sm outline-none">
                                 <option value="">--Select Supplier--</option>
                                 {suppliers.map((s) => (<option value={s.supplier_id} key={s.supplier_id}>{s.name}</option>))}
                             </select>
-                            <button type="button" onClick={() => setIsSupplierBox(true)} className="px-4 bg-sky-600 text-white rounded-lg text-[10px] font-bold">NEW</button>
+                            <button type="button" onClick={() => setIsSupplierBox(true)} className="px-4 bg-slate-900 text-white rounded-lg text-[10px] font-bold">NEW</button>
                         </div>
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Invoice Number</label>
-                        <input type="text" name="invoice_no" className="w-full border border-gray-200 px-4 py-2 rounded-lg text-sm bg-white outline-none" onChange={handleChange} value={formData.invoice_no} placeholder="#PUR-2024" />
+                        <label className="text-[10px] font-black text-slate-400 uppercase ml-1">Invoice Number</label>
+                        <input type="text" name="invoice_no" className="w-full border border-slate-200 px-4 py-2 rounded-lg text-sm bg-white outline-none" onChange={handleChange} value={formData.invoice_no} placeholder="#PUR-2024" />
                     </div>
                 </div>
 
                 {/* Purchase Items List */}
                 <div className="flex flex-col gap-3">
-                    <h3 className="text-sm font-bold text-gray-700 flex justify-between px-1">
+                    <h3 className="text-sm font-bold text-slate-700 flex justify-between px-1">
                         Items List
-                        <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-[10px]">{purchaseItems.length} Products</span>
+                        <span className="bg-slate-100 text-black px-2 py-0.5 rounded-full text-[10px]">{purchaseItems.length} Products</span>
                     </h3>
 
                     {purchaseItems.length > 0 ? purchaseItems.map((item) => (
-                        <div key={item.product_id} className="grid grid-cols-12 items-center gap-3 px-4 py-2 even:bg-gray-50 border border-gray-100 rounded-2xl">
+                        <div key={item.product_id} className="grid grid-cols-12 items-center gap-3 px-4 py-2 even:bg-slate-50 border border-slate-100 rounded-2xl">
                             <div className="col-span-12 lg:col-span-4">
-                                <p className="text-sm font-bold text-gray-800 truncate">{item.name}</p>
-                                <p className="text-[10px] text-gray-400">ID: {item.product_id}</p>
+                                <p className="text-sm font-bold text-slate-800 truncate">{item.name}</p>
+                                <p className="text-[10px] text-slate-400">ID: {item.product_id}</p>
                             </div>
                             <div className="col-span-4 lg:col-span-2">
-                                <label className="text-[9px] font-bold text-gray-400 uppercase block">Unit Price</label>
-                                <input type="number" value={item.purchase_price} onChange={(e) => handleItemUpdate(item.product_id, 'purchase_price', e.target.value)} className="w-full border rounded-md px-2 py-1 text-sm outline-sky-400" />
+                                <label className="text-[9px] font-bold text-slate-400 uppercase block">Unit Price</label>
+                                <input type="number" value={item.purchase_price} onChange={(e) => handleItemUpdate(item.product_id, 'purchase_price', e.target.value)} className="w-full border rounded-md px-2 py-1 text-sm outline-slate-400" />
                             </div>
                             <div className="col-span-4 lg:col-span-2">
-                                <label className="text-[9px] font-bold text-gray-400 uppercase block">Qty</label>
-                                <input type="number" min="1" value={item.quantity} onChange={(e) => handleItemUpdate(item.product_id, 'quantity', e.target.value)} className="w-full border rounded-md px-2 py-1 text-sm outline-sky-400" />
+                                <label className="text-[9px] font-bold text-slate-400 uppercase block">Qty</label>
+                                <input type="number" min="1" value={item.quantity} onChange={(e) => handleItemUpdate(item.product_id, 'quantity', e.target.value)} className="w-full border rounded-md px-2 py-1 text-sm outline-slate-400" />
                             </div>
                             <div className="col-span-3 lg:col-span-3 text-right">
-                                <label className="text-[9px] font-bold text-gray-400 uppercase block">Subtotal</label>
-                                <p className="text-sm font-black text-gray-800">৳{((item.purchase_price || 0) * (item.quantity || 0)).toFixed(2)}</p>
+                                <label className="text-[9px] font-bold text-slate-400 uppercase block">Subtotal</label>
+                                <p className="text-sm font-black text-slate-800">৳{((item.purchase_price || 0) * (item.quantity || 0)).toFixed(2)}</p>
                             </div>
                             <div className="col-span-1 flex justify-end">
-                                <button type="button" onClick={() => removeFromPurchase(item.product_id)} className="text-red-300 hover:text-red-600"><FaTrash size={14} /></button>
+                                <button type="button" onClick={() => removeFromPurchase(item.product_id)} className="text-slate-300 hover:text-slate-900"><FaTrash size={14} /></button>
                             </div>
                         </div>
                     )) : (
-                        <div className="text-center py-10 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 text-gray-400 text-sm">List is empty</div>
+                        <div className="text-center py-10 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 text-sm">List is empty</div>
                     )}
                 </div>
 
@@ -228,7 +228,7 @@ const AddPurchaseForm = () => {
                                 name="extra_discount" 
                                 value={formData.extra_discount} 
                                 onChange={handleChange} 
-                                className="w-24 bg-slate-800 border border-slate-700 text-right rounded-xl pl-6 pr-3 py-1.5 text-white font-mono outline-none focus:border-sky-500 transition-colors" 
+                                className="w-24 bg-slate-800 border border-slate-700 text-right rounded-xl pl-6 pr-3 py-1.5 text-white font-mono outline-none focus:border-slate-800 transition-colors" 
                                 onFocus={(e) => e.target.select()} 
                             />
                         </div>
@@ -236,9 +236,9 @@ const AddPurchaseForm = () => {
                     <div className="h-px bg-slate-800 my-1"></div>
                     <div className="flex justify-between items-end">
                         <span className="font-bold text-slate-200">Grand Total</span>
-                        <span className="text-3xl font-black text-sky-400 font-mono tracking-tight">৳{totals.total.toFixed(2)}</span>
+                        <span className="text-3xl font-black text-slate-400 font-mono tracking-tight">৳{totals.total.toFixed(2)}</span>
                     </div>
-                    <button type="submit" className="w-full bg-sky-500 hover:bg-sky-400 text-white p-3.5 rounded-xl font-bold text-sm mt-2 transition-all shadow-lg shadow-sky-500/20 active:scale-[0.98] flex justify-center items-center gap-2">
+                    <button type="submit" className="w-full bg-slate-800 hover:bg-slate-400 text-white p-3.5 rounded-xl font-bold text-sm mt-2 transition-all shadow-lg shadow-slate-800/20 active:scale-[0.98] flex justify-center items-center gap-2">
                         Complete Purchase
                     </button>
                 </div>

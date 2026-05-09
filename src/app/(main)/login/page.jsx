@@ -9,7 +9,7 @@ const LoginPageUser = () => {
         {/* Left Side: Branding */}
         <div className='w-full md:w-1/2 bg-slate-900 p-8 md:p-12 flex flex-col justify-between text-white relative overflow-hidden'>
           <div className='absolute top-0 right-0 w-48 h-48 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2'></div>
-          <div className='absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2'></div>
+          <div className='absolute bottom-0 left-0 w-48 h-48 bg-slate-800/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2'></div>
           
           <div className='relative z-10'>
             <div className='w-10 h-10 rounded-xl bg-primary flex items-center justify-center mb-6'>

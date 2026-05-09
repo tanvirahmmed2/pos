@@ -90,19 +90,19 @@ const Dashboard = () => {
                     <motion.div
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className='mb-8 flex flex-wrap gap-3 items-center bg-sky-50/50 p-4 rounded-xl border border-sky-100 w-fit'
+                        className='mb-8 flex flex-wrap gap-3 items-center bg-slate-50/50 p-4 rounded-xl border border-slate-100 w-fit'
                     >
                         <div className='flex items-center gap-3'>
                             <div className='flex flex-col gap-1'>
-                                <label className='text-[9px] font-black text-sky-600 uppercase tracking-widest ml-1'>Start Date</label>
-                                <DatePicker selected={startDate} onChange={d => setStartDate(d)} className='bg-white px-3 py-1.5 rounded-lg font-bold text-slate-700 outline-none border border-sky-100 shadow-sm text-xs' />
+                                <label className='text-[9px] font-black text-slate-900 uppercase tracking-widest ml-1'>Start Date</label>
+                                <DatePicker selected={startDate} onChange={d => setStartDate(d)} className='bg-white px-3 py-1.5 rounded-lg font-bold text-slate-700 outline-none border border-slate-100 shadow-sm text-xs' />
                             </div>
-                            <div className='text-sky-300 mt-4'>
+                            <div className='text-slate-300 mt-4'>
                                 <ArrowUpRight size={16} />
                             </div>
                             <div className='flex flex-col gap-1'>
-                                <label className='text-[9px] font-black text-sky-600 uppercase tracking-widest ml-1'>End Date</label>
-                                <DatePicker selected={endDate} onChange={d => setEndDate(d)} className='bg-white px-3 py-1.5 rounded-lg font-bold text-slate-700 outline-none border border-sky-100 shadow-sm text-xs' />
+                                <label className='text-[9px] font-black text-slate-900 uppercase tracking-widest ml-1'>End Date</label>
+                                <DatePicker selected={endDate} onChange={d => setEndDate(d)} className='bg-white px-3 py-1.5 rounded-lg font-bold text-slate-700 outline-none border border-slate-100 shadow-sm text-xs' />
                             </div>
                         </div>
                     </motion.div>
@@ -111,9 +111,9 @@ const Dashboard = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
                     <PeriodStat label={`${activeTab} Sales`} value={activeRange?.sales} icon={<TrendingUp size={18} />} trend="+12%" />
                     <PeriodStat label={`${activeTab} Purchases`} value={activeRange?.purchases} icon={<ShoppingCart size={18} />} />
-                    <PeriodStat label={`${activeTab} Returns`} value={activeRange?.returns} color="text-rose-500" icon={<RefreshCcw size={18} />} />
+                    <PeriodStat label={`${activeTab} Returns`} value={activeRange?.returns} color="text-slate-800" icon={<RefreshCcw size={18} />} />
                     {(role === 'admin' || role === 'manager') && (
-                        <PeriodStat label={`${activeTab} Net Profit`} value={activeRange?.profit} color="text-emerald-600" icon={<DollarSign size={18} />} trend="+8%" />
+                        <PeriodStat label={`${activeTab} Net Profit`} value={activeRange?.profit} color="text-slate-900" icon={<DollarSign size={18} />} trend="+8%" />
                     )}
                 </div>
             </div>
@@ -157,7 +157,7 @@ const PeriodStat = ({ label, value, color = "text-slate-900", icon, trend }) => 
     <div className='flex flex-col gap-2 p-4 bg-slate-50/50 rounded-xl border border-slate-100'>
         <div className='flex items-center justify-between'>
             <div className='text-slate-400'>{icon}</div>
-            {trend && <span className='text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded'>{trend}</span>}
+            {trend && <span className='text-[10px] font-bold text-slate-900 bg-slate-50 px-2 py-0.5 rounded'>{trend}</span>}
         </div>
         <div>
             <p className='text-[10px] font-bold text-slate-400 uppercase tracking-widest'>{label}</p>

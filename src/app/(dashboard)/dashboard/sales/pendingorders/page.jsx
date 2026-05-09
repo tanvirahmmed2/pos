@@ -91,16 +91,16 @@ const PendingOrdersPage = () => {
           <h1 className='text-2xl font-bold text-slate-800 tracking-tight'>Pending Orders</h1>
           <p className='text-sm text-slate-500 mt-1'>Review and confirm or cancel incoming orders</p>
         </div>
-        <div className='bg-amber-50 px-4 py-2 rounded-xl border border-amber-100'>
-          <span className='text-amber-700 font-bold'>{orders.length}</span>
-          <span className='text-amber-600 text-xs uppercase tracking-wider ml-2 font-bold'>Awaiting Confirmation</span>
+        <div className='bg-slate-50 px-4 py-2 rounded-xl border border-slate-100'>
+          <span className='text-black font-bold'>{orders.length}</span>
+          <span className='text-slate-900 text-xs uppercase tracking-wider ml-2 font-bold'>Awaiting Confirmation</span>
         </div>
       </div>
 
       {/* Orders List */}
       <div className='w-full flex flex-col gap-4'>
         {loading ? (
-          <p className='text-center text-sky-400 animate-pulse font-bold py-20'>Fetching Pending Orders...</p>
+          <p className='text-center text-slate-400 animate-pulse font-bold py-20'>Fetching Pending Orders...</p>
         ) : orders.length === 0 ? (
           <div className='w-full h-64 flex flex-col items-center justify-center text-center gap-3 p-6 bg-white rounded-2xl shadow-sm border border-slate-100'>
             <p className='text-slate-600 font-semibold'>No Pending Orders</p>
@@ -112,7 +112,7 @@ const PendingOrdersPage = () => {
             {/* Customer & Date */}
             <div className='md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-4 flex flex-col justify-center'>
               <div className='flex items-center gap-2 mb-2'>
-                <span className='text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-amber-100 text-amber-700'>
+                <span className='text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-slate-100 text-black'>
                   Pending
                 </span>
                 <span className='text-[10px] text-slate-400 font-bold uppercase'>
@@ -131,7 +131,7 @@ const PendingOrdersPage = () => {
                 {order.product_list?.length > 0 ? order.product_list.map((product, pIdx) => (
                   <div key={pIdx} className='flex justify-between items-center text-sm'>
                     <p className='font-bold text-slate-700 truncate pr-2 flex-1'>
-                      <span className='text-sky-500 font-black mr-2'>x{product.quantity}</span>
+                      <span className='text-slate-800 font-black mr-2'>x{product.quantity}</span>
                       {product.name}
                     </p>
                     <p className='font-black text-slate-900'>৳{(Number(product.price) * Number(product.quantity)).toLocaleString()}</p>
@@ -145,12 +145,12 @@ const PendingOrdersPage = () => {
               <div className='flex justify-between text-xs text-slate-500 font-medium'>
                 <span>Total</span><span>৳{order.total_amount}</span>
               </div>
-              <div className='flex justify-between text-xs text-rose-500 font-medium'>
+              <div className='flex justify-between text-xs text-slate-800 font-medium'>
                 <span>Discount</span><span>−৳{order.discount || 0}</span>
               </div>
               <div className='flex justify-between items-center border-t border-slate-200 pt-2 mt-1'>
-                <span className='text-[10px] font-black text-amber-600 uppercase tracking-wider'>Due</span>
-                <span className='text-lg font-black text-amber-600'>৳{Number(order.total_amount || 0).toLocaleString()}</span>
+                <span className='text-[10px] font-black text-slate-900 uppercase tracking-wider'>Due</span>
+                <span className='text-lg font-black text-slate-900'>৳{Number(order.total_amount || 0).toLocaleString()}</span>
               </div>
             </div>
 
@@ -160,7 +160,7 @@ const PendingOrdersPage = () => {
               {confirmCancel === order.order_id ? (
                 <div className='flex flex-col gap-2 w-full animate-in fade-in zoom-in duration-200'>
                   <p className='text-[10px] text-center text-slate-500 font-bold uppercase tracking-widest'>Cancel order?</p>
-                  <button onClick={() => cancelOrder(order.order_id)} className='w-full bg-rose-500 hover:bg-rose-600 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold transition-all active:scale-95 shadow-sm'>
+                  <button onClick={() => cancelOrder(order.order_id)} className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold transition-all active:scale-95 shadow-sm'>
                     <FaCheck /> Yes, Cancel
                   </button>
                   <button onClick={() => setConfirmCancel(null)} className='w-full bg-slate-100 hover:bg-slate-200 text-slate-600 p-2.5 rounded-xl flex items-center justify-center transition-all active:scale-95'>
@@ -170,7 +170,7 @@ const PendingOrdersPage = () => {
               ) : confirmDeliver === order.order_id ? (
                 <div className='flex flex-col gap-2 w-full animate-in fade-in zoom-in duration-200'>
                   <p className='text-[10px] text-center text-slate-500 font-bold uppercase tracking-widest'>Deliver immediately?</p>
-                  <button onClick={() => directDeliverOrder(order.order_id)} className='w-full bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold transition-all active:scale-95 shadow-sm'>
+                  <button onClick={() => directDeliverOrder(order.order_id)} className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold transition-all active:scale-95 shadow-sm'>
                     <FaCheck /> Confirm Delivery
                   </button>
                   <button onClick={() => setConfirmDeliver(null)} className='w-full bg-slate-100 hover:bg-slate-200 text-slate-600 p-2.5 rounded-xl flex items-center justify-center transition-all active:scale-95'>
@@ -180,7 +180,7 @@ const PendingOrdersPage = () => {
               ) : confirmDelete === order.order_id ? (
                 <div className='flex flex-col gap-2 w-full animate-in fade-in zoom-in duration-200'>
                   <p className='text-[10px] text-center text-slate-500 font-bold uppercase tracking-widest'>Delete permanently?</p>
-                  <button onClick={() => deleteOrder(order.order_id)} className='w-full bg-rose-500 hover:bg-rose-600 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold transition-all active:scale-95 shadow-sm'>
+                  <button onClick={() => deleteOrder(order.order_id)} className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold transition-all active:scale-95 shadow-sm'>
                     <FaCheck /> Delete
                   </button>
                   <button onClick={() => setConfirmDelete(null)} className='w-full bg-slate-100 hover:bg-slate-200 text-slate-600 p-2.5 rounded-xl flex items-center justify-center transition-all active:scale-95'>
@@ -190,10 +190,10 @@ const PendingOrdersPage = () => {
               ) : (
                 <div className='w-full flex flex-col gap-2'>
                   <div className='grid grid-cols-1 gap-2'>
-                    <button onClick={() => setConfirmDeliver(order.order_id)} className='w-full bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-tighter transition-all active:scale-95 shadow-sm' title='Deliver Immediately'>
+                    <button onClick={() => setConfirmDeliver(order.order_id)} className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-tighter transition-all active:scale-95 shadow-sm' title='Deliver Immediately'>
                       <MdOutlineDoneAll size={18} /> Direct Deliver
                     </button>
-                    <button onClick={() => confirmOrder(order.order_id)} className='w-full bg-sky-500 hover:bg-sky-600 text-white p-2.5 rounded-xl flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-tighter transition-all active:scale-95 shadow-sm' title='Accept & Confirm'>
+                    <button onClick={() => confirmOrder(order.order_id)} className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-tighter transition-all active:scale-95 shadow-sm' title='Accept & Confirm'>
                       <GiConfirmed size={18} /> Accept Order
                     </button>
                   </div>
@@ -201,10 +201,10 @@ const PendingOrdersPage = () => {
                     <button onClick={() => generateReceipt?.(order, siteData)} className='bg-slate-50 text-slate-600 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-all active:scale-95' title='Print'>
                       <FaPrint size={15} />
                     </button>
-                    <button onClick={() => setConfirmCancel(order.order_id)} className='bg-amber-50 text-amber-600 hover:bg-amber-100 p-2.5 rounded-xl flex items-center justify-center transition-all active:scale-95' title='Cancel Order'>
+                    <button onClick={() => setConfirmCancel(order.order_id)} className='bg-slate-50 text-slate-900 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-all active:scale-95' title='Cancel Order'>
                       <MdOutlineCancel size={18} />
                     </button>
-                    <button onClick={() => setConfirmDelete(order.order_id)} className='bg-rose-50 text-rose-500 hover:bg-rose-100 p-2.5 rounded-xl flex items-center justify-center transition-all active:scale-95' title='Delete Order'>
+                    <button onClick={() => setConfirmDelete(order.order_id)} className='bg-slate-50 text-slate-800 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-all active:scale-95' title='Delete Order'>
                       <MdDelete size={18} />
                     </button>
                   </div>

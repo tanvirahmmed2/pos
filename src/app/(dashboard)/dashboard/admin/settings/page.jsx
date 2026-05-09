@@ -81,7 +81,7 @@ const SettingsPage = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-sky-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-slate-800" />
       </div>
     )
   }
@@ -107,7 +107,7 @@ const SettingsPage = () => {
             <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">Subscription Plan</h2>
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-3">
               <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${
-                data.subscription_status === 'active' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'
+                data.subscription_status === 'active' ? 'bg-slate-100 text-slate-900' : 'bg-slate-100 text-slate-900'
               }`}>
                 {data.subscription_status === 'active' ? <CheckCircle2 size={12} /> : <AlertCircle size={12} />}
                 {data.subscription_status || 'Unknown'}
@@ -122,12 +122,12 @@ const SettingsPage = () => {
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Website & Account Status</span>
             <div className="flex gap-2">
               <div className={`px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest border ${
-                data.status === 'active' ? 'border-emerald-100 bg-emerald-50 text-emerald-600' : 'border-amber-100 bg-amber-50 text-amber-600'
+                data.status === 'active' ? 'border-slate-100 bg-slate-50 text-slate-900' : 'border-slate-100 bg-slate-50 text-slate-900'
               }`}>
                 Site: {data.status || 'Unknown'}
               </div>
               <div className={`px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest border ${
-                data.tenant_status === 'active' ? 'border-emerald-100 bg-emerald-50 text-emerald-600' : 'border-rose-100 bg-rose-50 text-rose-600'
+                data.tenant_status === 'active' ? 'border-slate-100 bg-slate-50 text-slate-900' : 'border-slate-100 bg-slate-50 text-slate-900'
               }`}>
                 Tenant: {data.tenant_status || 'Inactive'}
               </div>
@@ -136,20 +136,20 @@ const SettingsPage = () => {
         </div>
         <div className="bg-slate-50 px-8 py-3 flex items-center justify-between border-t border-slate-100">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">For billing inquiries or plan upgrades, please visit disibin.com</p>
-          <a href="https://www.disibin.com" target="_blank" className="text-xs font-black text-sky-500 uppercase tracking-widest hover:text-sky-600 transition-colors">Contact Support</a>
+          <a href="https://www.disibin.com" target="_blank" className="text-xs font-black text-slate-800 uppercase tracking-widest hover:text-slate-900 transition-colors">Contact Support</a>
         </div>
       </motion.div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         
         {/* --- Business Profile --- */}
-        <Section title="Business Profile" icon={<Globe className="text-sky-500" />}>
+        <Section title="Business Profile" icon={<Globe className="text-slate-800" />}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <InputField 
                 label="Website Name" name="name" 
                 value={data.name} onChange={handleChange} 
-                placeholder="e.g. Nizam Varieties Store"
+                placeholder="e.g. My Awesome Store"
               />
             </div>
             <InputField 
@@ -182,7 +182,7 @@ const SettingsPage = () => {
         </Section>
 
         {/* --- Branding & Assets --- */}
-        <Section title="Branding" icon={<Layout className="text-indigo-500" />}>
+        <Section title="Branding" icon={<Layout className="text-slate-800" />}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InputField 
               label="Logo URL" name="logo" 
@@ -206,7 +206,7 @@ const SettingsPage = () => {
         </Section>
 
         {/* --- SEO Settings --- */}
-        <Section title="SEO & Meta" icon={<Search className="text-amber-500" />}>
+        <Section title="SEO & Meta" icon={<Search className="text-slate-800" />}>
           <div className="grid grid-cols-1 gap-6">
             <InputField 
               label="Meta Title" name="meta_title" 
@@ -219,14 +219,14 @@ const SettingsPage = () => {
                 value={data.meta_description}
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl outline-none focus:border-sky-500 transition-all text-sm"
+                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl outline-none focus:border-slate-800 transition-all text-sm"
               />
             </div>
           </div>
         </Section>
 
         {/* --- Social Links --- */}
-        <Section title="Social Presence" icon={<RiFacebookFill className="text-blue-600" size={24} />}>
+        <Section title="Social Presence" icon={<RiFacebookFill className="text-slate-900" size={24} />}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <SocialField icon={<RiFacebookFill size={18} />} label="Facebook" name="facebook" value={data.facebook} onChange={handleChange} />
             <SocialField icon={<RiInstagramLine size={18} />} label="Instagram" name="instagram" value={data.instagram} onChange={handleChange} />
@@ -236,7 +236,7 @@ const SettingsPage = () => {
         </Section>
 
         {/* --- Platform Controls --- */}
-        <Section title="Platform Controls" icon={<ShoppingBag className="text-rose-500" />}>
+        <Section title="Platform Controls" icon={<ShoppingBag className="text-slate-800" />}>
           <div className="flex flex-wrap gap-8">
             <ToggleField 
               label="Public Website" 
@@ -255,7 +255,7 @@ const SettingsPage = () => {
           <button 
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-sky-600 transition-all shadow-xl shadow-slate-200 disabled:opacity-50"
+            className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-900 transition-all shadow-xl shadow-slate-200 disabled:opacity-50"
           >
             {saving ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
             {saving ? 'Saving...' : 'Save Changes'}
@@ -285,7 +285,7 @@ const InputField = ({ label, ...props }) => (
     <label className="text-sm font-bold text-slate-700 uppercase tracking-wider ml-1">{label}</label>
     <input 
       {...props}
-      className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-sky-500 focus:bg-white transition-all text-sm font-medium"
+      className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-slate-800 focus:bg-white transition-all text-sm font-medium"
     />
   </div>
 )
@@ -313,7 +313,7 @@ const SocialField = ({ icon, label, ...props }) => (
       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">{icon}</div>
       <input 
         {...props}
-        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-sky-500 focus:bg-white transition-all text-sm font-medium"
+        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-slate-800 focus:bg-white transition-all text-sm font-medium"
       />
     </div>
   </div>
@@ -326,7 +326,7 @@ const ToggleField = ({ label, description, checked, onChange, name }) => (
         type="checkbox" name={name} checked={checked} onChange={onChange}
         className="sr-only"
       />
-      <div className={`w-12 h-6 rounded-full transition-colors ${checked ? 'bg-sky-500' : 'bg-slate-200'}`} />
+      <div className={`w-12 h-6 rounded-full transition-colors ${checked ? 'bg-slate-800' : 'bg-slate-200'}`} />
       <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${checked ? 'left-7' : 'left-1'}`} />
     </div>
     <div className="flex flex-col">

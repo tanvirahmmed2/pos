@@ -95,6 +95,27 @@ const Orderform = ({ cartItems = [] }) => {
         }))
     }
 
+    const handleQuantityChange = (cartItemId, newQty) => {
+        const parsed = parseInt(newQty);
+        setCart(prev => ({
+            ...prev,
+            items: prev.items.map(item => {
+                if (item.cartItemId === cartItemId) {
+                    if (newQty === '') return { ...item, quantity: '' };
+                    let qty = isNaN(parsed) ? 1 : Math.max(1, parsed);
+                    
+                    if (item.stock && qty > item.stock) {
+                        toast.error(`Only ${item.stock} items available in stock`);
+                        qty = item.stock;
+                    }
+                    
+                    return { ...item, quantity: qty };
+                }
+                return item;
+            })
+        }))
+    }
+
     // Master Calculation Effect
     useEffect(() => {
         const subTotal = cartItems.reduce((sum, item) => {
@@ -133,7 +154,7 @@ const Orderform = ({ cartItems = [] }) => {
         setIsPaymentModal(true)
     }
 
-    
+
     const changeAmount = (parseFloat(receivedAmount) || 0) - data.totalPrice
     const router = useRouter()
 
@@ -299,15 +320,18 @@ const Orderform = ({ cartItems = [] }) => {
                             <div key={item.product_id} className='w-full grid grid-cols-6 sm:grid-cols-12 gap-2 p-2 rounded-xl hover:bg-slate-50 transition-all items-center'>
                                 <div className='col-span-3 sm:col-span-5 flex flex-col pr-1'>
                                     <p className='text-xs font-bold text-slate-700 truncate' title={item.name}>{item.name}</p>
-                                    <div className='flex items-center gap-2'>
-                                        <button onClick={() => removeFromCart(item?.product_id)} className='text-[9px] text-rose-500 font-bold uppercase'>Remove</button>
-                                        <span className='sm:hidden text-[9px] text-slate-400'>@ ৳{itemRate}</span>
-                                    </div>
+                                    <span className='sm:hidden text-[9px] text-slate-400'>@ ৳{itemRate}</span>
                                 </div>
 
                                 <div className='col-span-2 sm:col-span-3 flex items-center justify-between bg-slate-100 px-1.5 py-1 rounded-lg'>
-                                    <button type='button' onClick={() => decreaseQuantity(item?.product_id)} className='p-1 text-slate-400 hover:text-rose-500'><FaMinus size={8} /></button>
-                                    <span className='text-xs font-bold text-slate-700'>{item?.quantity}</span>
+                                    <button type='button' onClick={() => decreaseQuantity(item?.cartItemId)} className='p-1 text-slate-400 hover:text-slate-800'><FaMinus size={8} /></button>
+                                    <input 
+                                        type="number"
+                                        value={item?.quantity}
+                                        onChange={(e) => handleQuantityChange(item?.cartItemId, e.target.value)}
+                                        className='w-full text-center bg-transparent text-xs font-bold text-slate-700 outline-none'
+                                        min="1"
+                                    />
                                     <button type='button' onClick={() => addToCart(item)} className='p-1 text-slate-400 hover:text-primary'><FaPlus size={8} /></button>
                                 </div>
 
@@ -321,7 +345,12 @@ const Orderform = ({ cartItems = [] }) => {
                                     />
                                 </div>
 
-                                <p className='col-span-1 sm:col-span-2 text-right font-black text-slate-900 text-xs'>৳{rowTotal.toFixed(0)}</p>
+                                <div className='col-span-1 sm:col-span-2 flex items-center justify-end gap-2'>
+                                    <p className='font-black text-slate-900 text-xs'>৳{rowTotal.toFixed(0)}</p>
+                                    <button type="button" onClick={() => removeFromCart(item?.cartItemId)} className='text-slate-400 hover:text-slate-900 transition-colors shrink-0' title="Remove item">
+                                        <MdDeleteOutline size={16} />
+                                    </button>
+                                </div>
                             </div>
                         )
                     })}
@@ -333,12 +362,12 @@ const Orderform = ({ cartItems = [] }) => {
                         <span className='text-slate-900'>৳{data.subTotal.toFixed(2)}</span>
                     </div>
                     {(data.totalDiscount > 0 || parseFloat(data.extradiscount) > 0) && (
-                        <div className='flex justify-between text-xs font-bold text-rose-500'>
+                        <div className='flex justify-between text-xs font-bold text-slate-800'>
                             <span>Total Discount</span>
                             <span>-৳{(data.totalDiscount + (parseFloat(data.extradiscount) || 0)).toFixed(2)}</span>
                         </div>
                     )}
-                    
+
                     <div className='flex items-center justify-between pt-2 border-t border-dashed border-slate-200'>
                         <label className='text-sm font-bold text-slate-800 uppercase tracking-tight'>Total Amount</label>
                         <span className='text-2xl font-black text-primary tracking-tighter'>৳{data.totalPrice.toFixed(0)}</span>
@@ -376,9 +405,9 @@ const Orderform = ({ cartItems = [] }) => {
                                 />
                             </div>
 
-                            <div className="flex justify-between items-center p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-                                <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Change Due</span>
-                                <span className="text-2xl font-black text-emerald-700 tracking-tighter">৳{Math.max(0, changeAmount).toFixed(0)}</span>
+                            <div className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                <span className="text-xs font-bold text-slate-900 uppercase tracking-widest">Change Due</span>
+                                <span className="text-2xl font-black text-black tracking-tighter">৳{Math.max(0, changeAmount).toFixed(0)}</span>
                             </div>
 
                             <div className="flex gap-3 pt-2">

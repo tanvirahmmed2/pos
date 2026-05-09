@@ -31,7 +31,7 @@ const AnalyticsPage = () => {
         fetchAnalytics()
     }, [])
 
-    if (loading) return <div className='p-10 text-center text-sky-400 animate-pulse font-black uppercase tracking-widest'>Analyzing Business Logic...</div>
+    if (loading) return <div className='p-10 text-center text-slate-400 animate-pulse font-black uppercase tracking-widest'>Analyzing Business Logic...</div>
 
     // Advanced: Calculate Trend Percentage
     const calculateTrend = (current, previous) => {
@@ -73,12 +73,12 @@ const AnalyticsPage = () => {
         <div className='mx-auto w-full p-1 sm:p-4 flex flex-col gap-8 bg-white min-h-screen'>
             <div className='flex justify-between items-end'>
                 <div className='flex flex-col gap-1'>
-                    <h1 className='text-3xl font-black text-sky-900 tracking-tighter'>Business Analytics</h1>
-                    <p className='text-sky-400 text-sm font-medium tracking-widest uppercase'>Intelligence & Capital Flow</p>
+                    <h1 className='text-3xl font-black text-black tracking-tighter'>Business Analytics</h1>
+                    <p className='text-slate-400 text-sm font-medium tracking-widest uppercase'>Intelligence & Capital Flow</p>
                 </div>
                 <div className='text-right'>
-                    <span className='text-[10px] font-bold text-gray-400 uppercase'>Data Refresh</span>
-                    <p className='text-xs font-bold text-sky-600'>{new Date().toLocaleTimeString()}</p>
+                    <span className='text-[10px] font-bold text-slate-400 uppercase'>Data Refresh</span>
+                    <p className='text-xs font-bold text-slate-900'>{new Date().toLocaleTimeString()}</p>
                 </div>
             </div>
 
@@ -90,12 +90,12 @@ const AnalyticsPage = () => {
                     { label: 'Last 7 Days', val: data?.sales?.last_week },
                     { label: 'This Year', val: data?.sales?.last_year },
                 ].map((s, i) => (
-                    <div key={i} className='p-6 bg-sky-50 rounded-2xl border border-sky-100 relative overflow-hidden group'>
-                        <span className='text-[10px] font-bold text-sky-400 uppercase tracking-widest'>{s.label}</span>
+                    <div key={i} className='p-6 bg-slate-50 rounded-2xl border border-slate-100 relative overflow-hidden group'>
+                        <span className='text-[10px] font-bold text-slate-400 uppercase tracking-widest'>{s.label}</span>
                         <div className='flex items-baseline gap-2'>
-                            <p className='text-xl font-black text-sky-800 mt-1'>৳{formatNum(s.val)}</p>
+                            <p className='text-xl font-black text-black mt-1'>৳{formatNum(s.val)}</p>
                             {s.trend !== undefined && (
-                                <span className={`text-[10px] font-bold ${s.trend >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                <span className={`text-[10px] font-bold ${s.trend >= 0 ? 'text-slate-800' : 'text-slate-800'}`}>
                                     {s.trend >= 0 ? '↑' : '↓'} {Math.abs(s.trend)}%
                                 </span>
                             )}
@@ -106,19 +106,19 @@ const AnalyticsPage = () => {
 
             {/* Finance Cards with Contextual Info */}
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-                <div className='p-8 bg-sky-600 rounded-2xl text-white shadow-xl shadow-sky-100 relative'>
+                <div className='p-8 bg-slate-900 rounded-2xl text-white shadow-xl shadow-slate-100 relative'>
                     <span className='text-xs font-bold opacity-80 uppercase tracking-wider'>Total Procurement</span>
                     <p className='text-3xl font-black mt-2'>৳{formatNum(data?.finance?.total_invested)}</p>
                     <div className='mt-4 h-1 w-full bg-white/20 rounded-full overflow-hidden'>
                         <div className='h-full bg-white w-2/3'></div>
                     </div>
                 </div>
-                <div className='p-8 bg-emerald-600 rounded-2xl text-white shadow-xl shadow-emerald-100'>
+                <div className='p-8 bg-slate-900 rounded-2xl text-white shadow-xl shadow-slate-100'>
                     <span className='text-xs font-bold opacity-80 uppercase tracking-wider'>Net Cash Flow</span>
                     <p className='text-3xl font-black mt-2'>৳{formatNum(data?.finance?.net_cash)}</p>
                     <p className='text-[10px] mt-2 opacity-70 font-medium'>Liquidity after purchase settlements</p>
                 </div>
-                <div className='p-8 bg-sky-900 rounded-2xl text-white shadow-xl shadow-sky-200'>
+                <div className='p-8 bg-black rounded-2xl text-white shadow-xl shadow-slate-200'>
                     <span className='text-xs font-bold opacity-80 uppercase tracking-wider'>Stock Asset Valuation</span>
                     <p className='text-3xl font-black mt-2'>৳{formatNum(data?.finance?.current_stock_value)}</p>
                     <p className='text-[10px] mt-2 opacity-70 font-medium'>Calculated at current purchase price</p>
@@ -126,20 +126,20 @@ const AnalyticsPage = () => {
             </div>
 
             {/* Performance Chart */}
-            <div className='w-full p-8 border border-sky-100 rounded-3xl bg-white shadow-sm'>
+            <div className='w-full p-8 border border-slate-100 rounded-3xl bg-white shadow-sm'>
                 <div className='flex justify-between items-center mb-8'>
                     <div>
-                        <h3 className='text-lg font-bold text-sky-800'>Revenue vs. Procurement</h3>
-                        <p className='text-xs text-gray-400'>Last 7 days performance window</p>
+                        <h3 className='text-lg font-bold text-black'>Revenue vs. Procurement</h3>
+                        <p className='text-xs text-slate-400'>Last 7 days performance window</p>
                     </div>
                     <div className='flex gap-4 text-[10px] font-black uppercase tracking-tighter'>
                         <div className='flex items-center gap-1.5'>
-                            <span className='w-2 h-2 rounded-full bg-sky-500'></span>
-                            <span className='text-sky-900'>Sales</span>
+                            <span className='w-2 h-2 rounded-full bg-slate-800'></span>
+                            <span className='text-black'>Sales</span>
                         </div>
                         <div className='flex items-center gap-1.5'>
-                            <span className='w-2 h-2 rounded-full bg-gray-300'></span>
-                            <span className='text-gray-400'>Cost</span>
+                            <span className='w-2 h-2 rounded-full bg-slate-300'></span>
+                            <span className='text-slate-400'>Cost</span>
                         </div>
                     </div>
                 </div>

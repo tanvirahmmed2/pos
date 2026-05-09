@@ -1,4 +1,4 @@
-export const printOrder = (order) => {
+export const printOrder = (order, siteData) => {
   const iframe = document.createElement('iframe');
   iframe.style.display = 'none';
   document.body.appendChild(iframe);
@@ -286,9 +286,9 @@ export const printOrder = (order) => {
       <body>
 
         <div class="header">
-          <p class="store-name">Nizam Varieties Store</p>
-          <p class="store-contact">Pakuritala Bazar, Tarakanda &nbsp;·&nbsp;</p>
-          <p class="store-contact">Contact: 01645-172356</p>
+          <p class="store-name">${siteData?.website_name || "Store Name"}</p>
+          <p class="store-contact">${siteData?.address || "Store Address"} &nbsp;·&nbsp;</p>
+          <p class="store-contact">Contact: ${siteData?.phone || "Store Phone"}</p>
           <p class="receipt-type">— Sales Receipt —</p>
         </div>
 

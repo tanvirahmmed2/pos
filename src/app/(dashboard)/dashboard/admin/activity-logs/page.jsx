@@ -30,7 +30,7 @@ const ActivityLogsPage = () => {
             <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100'>
                 <div>
                     <h1 className='text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-2'>
-                        <RiHistoryLine className='text-sky-500' />
+                        <RiHistoryLine className='text-slate-800' />
                         Activity Logs
                     </h1>
                     <p className='text-sm text-slate-500 mt-1'>System-wide inventory and transactional activities</p>
@@ -73,9 +73,9 @@ const ActivityLogsPage = () => {
                                         </td>
                                         <td className='py-4 px-6'>
                                             <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
-                                                log.type === 'sale' ? 'bg-emerald-50 text-emerald-600' :
-                                                log.type === 'purchase' ? 'bg-sky-50 text-sky-600' :
-                                                'bg-amber-50 text-amber-600'
+                                                log.type === 'sale' ? 'bg-slate-50 text-slate-900' :
+                                                log.type === 'purchase' ? 'bg-slate-50 text-slate-900' :
+                                                'bg-slate-50 text-slate-900'
                                             }`}>
                                                 {log.type}
                                             </span>

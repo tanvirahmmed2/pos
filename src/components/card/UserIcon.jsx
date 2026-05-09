@@ -3,7 +3,7 @@ import { LuSquareUserRound } from "react-icons/lu";
 
 const UserIcon = () => {
   return (
-    <p className='text-6xl text-red-500'><LuSquareUserRound/></p>
+    <p className='text-6xl text-slate-800'><LuSquareUserRound/></p>
   )
 }
 

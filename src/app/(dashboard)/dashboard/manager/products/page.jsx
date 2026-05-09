@@ -99,7 +99,7 @@ const ProductListPage = () => {
                                 </Link>
                                 <div className='flex items-center gap-2 mt-0.5'>
                                     <span className='hidden xs:inline text-[9px] text-slate-400 font-mono'>#{item.product_id}</span>
-                                    <span className={`sm:hidden px-1.5 py-0.5 text-[8px] font-bold rounded-md ${item.stock > 10 ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
+                                    <span className={`sm:hidden px-1.5 py-0.5 text-[8px] font-bold rounded-md ${item.stock > 10 ? 'bg-slate-50 text-slate-900' : 'bg-slate-50 text-slate-900'}`}>
                                         {item.stock} in stock
                                     </span>
                                 </div>
@@ -110,16 +110,16 @@ const ProductListPage = () => {
                             </p>
 
                             <div className="hidden sm:block col-span-1 text-center">
-                                <span className={`px-2.5 py-1 text-[10px] font-bold rounded-md ${item.stock > 10 ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
+                                <span className={`px-2.5 py-1 text-[10px] font-bold rounded-md ${item.stock > 10 ? 'bg-slate-50 text-slate-900' : 'bg-slate-50 text-slate-900'}`}>
                                     {item.stock} Qty
                                 </span>
                             </div>
 
                             <div className="col-span-1 flex justify-end items-center gap-0.5">
-                                <Link href={`/dashboard/manager/products/${item.slug}`} className='p-2 text-slate-400 hover:text-primary hover:bg-sky-50 rounded-lg transition-all'>
+                                <Link href={`/dashboard/manager/products/${item.slug}`} className='p-2 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-lg transition-all'>
                                     <MdEdit size={16} />
                                 </Link>
-                                <button onClick={() => handleDelete(item.product_id)} className='p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all'>
+                                <button onClick={() => handleDelete(item.product_id)} className='p-2 text-slate-400 hover:text-slate-800 hover:bg-slate-50 rounded-lg transition-all'>
                                     <MdDeleteOutline size={16} />
                                 </button>
                             </div>

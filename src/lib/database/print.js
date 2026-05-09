@@ -8,7 +8,7 @@ export const generateReceipt = (order, siteData) => {
   const formattedDate = orderDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   const formattedTime = orderDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-  const storeName = siteData?.business_name || siteData?.name || "Nizam Varieties Store";
+  const storeName = siteData?.website_name || "Store Name";
   const storeAddress = siteData?.address || "Pakuritala Bazar, Tarakanda";
   const storePhone = siteData?.phone || "01645-172356";
   const storeLogo = siteData?.logo || "";

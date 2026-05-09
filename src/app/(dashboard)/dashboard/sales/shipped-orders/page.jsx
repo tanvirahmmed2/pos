@@ -60,16 +60,16 @@ const ShippedOrdersPage = () => {
           <h1 className='text-2xl font-bold text-slate-800 tracking-tight'>Shipped Orders</h1>
           <p className='text-sm text-slate-500 mt-1'>Track shipped orders and mark as delivered or handle returns</p>
         </div>
-        <div className='bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100'>
-          <span className='text-indigo-700 font-bold'>{orders.length}</span>
-          <span className='text-indigo-600 text-xs uppercase tracking-wider ml-2 font-bold'>In Transit</span>
+        <div className='bg-slate-50 px-4 py-2 rounded-xl border border-slate-100'>
+          <span className='text-black font-bold'>{orders.length}</span>
+          <span className='text-slate-900 text-xs uppercase tracking-wider ml-2 font-bold'>In Transit</span>
         </div>
       </div>
 
       {/* List */}
       <div className='w-full flex flex-col gap-4'>
         {loading ? (
-          <p className='text-center text-sky-400 animate-pulse font-bold py-20'>Loading Shipped Orders...</p>
+          <p className='text-center text-slate-400 animate-pulse font-bold py-20'>Loading Shipped Orders...</p>
         ) : orders.length === 0 ? (
           <div className='w-full h-64 flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-slate-100 shadow-sm'>
             <p className='text-slate-600 font-semibold'>No Shipped Orders</p>
@@ -81,7 +81,7 @@ const ShippedOrdersPage = () => {
             {/* Customer */}
             <div className='md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-4 flex flex-col justify-center'>
               <div className='flex items-center gap-2 mb-2'>
-                <span className='text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-indigo-100 text-indigo-700'>
+                <span className='text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-slate-100 text-black'>
                   Shipped
                 </span>
                 <span className='text-[10px] text-slate-400 font-bold uppercase'>
@@ -100,7 +100,7 @@ const ShippedOrdersPage = () => {
                 {order.product_list?.map((p, i) => (
                   <div key={i} className='flex justify-between items-center text-sm'>
                     <p className='font-bold text-slate-700 truncate pr-2 flex-1'>
-                      <span className='text-sky-500 font-black mr-2'>x{p.quantity}</span>{p.name}
+                      <span className='text-slate-800 font-black mr-2'>x{p.quantity}</span>{p.name}
                     </p>
                     <p className='font-black text-slate-900'>৳{(Number(p.price) * Number(p.quantity)).toLocaleString()}</p>
                   </div>
@@ -114,8 +114,8 @@ const ShippedOrdersPage = () => {
                 <span>Total</span><span>৳{order.total_amount}</span>
               </div>
               <div className='flex justify-between items-center border-t border-slate-200 pt-2 mt-1'>
-                <span className='text-[10px] font-black text-emerald-600 uppercase'>Paid</span>
-                <span className='text-lg font-black text-emerald-600'>৳{Number(order.total_amount || 0).toLocaleString()}</span>
+                <span className='text-[10px] font-black text-slate-900 uppercase'>Paid</span>
+                <span className='text-lg font-black text-slate-900'>৳{Number(order.total_amount || 0).toLocaleString()}</span>
               </div>
             </div>
 
@@ -124,7 +124,7 @@ const ShippedOrdersPage = () => {
               {confirmDeliver === order.order_id ? (
                 <div className='flex flex-col gap-2 w-full'>
                   <p className='text-[10px] text-center text-slate-500 font-bold'>Mark as delivered?</p>
-                  <button onClick={() => deliverOrder(order.order_id)} className='w-full bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold'>
+                  <button onClick={() => deliverOrder(order.order_id)} className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold'>
                     <FaCheck /> Confirm Delivery
                   </button>
                   <button onClick={() => setConfirmDeliver(null)} className='w-full bg-slate-100 hover:bg-slate-200 text-slate-600 p-2.5 rounded-xl flex items-center justify-center'>
@@ -134,7 +134,7 @@ const ShippedOrdersPage = () => {
               ) : confirmReturn === order.order_id ? (
                 <div className='flex flex-col gap-2 w-full'>
                   <p className='text-[10px] text-center text-slate-500 font-bold'>Return & restore stock?</p>
-                  <button onClick={() => returnOrder(order.order_id)} className='w-full bg-rose-500 hover:bg-rose-600 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold'>
+                  <button onClick={() => returnOrder(order.order_id)} className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center gap-1 text-xs font-bold'>
                     <FaCheck /> Confirm Return
                   </button>
                   <button onClick={() => setConfirmReturn(null)} className='w-full bg-slate-100 hover:bg-slate-200 text-slate-600 p-2.5 rounded-xl flex items-center justify-center'>
@@ -143,10 +143,10 @@ const ShippedOrdersPage = () => {
                 </div>
               ) : (
                 <div className='w-full flex flex-col gap-2'>
-                  <button onClick={() => setConfirmDeliver(order.order_id)} className='w-full bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-colors'>
+                  <button onClick={() => setConfirmDeliver(order.order_id)} className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-colors'>
                     <MdOutlineDoneAll size={18} /> Deliver
                   </button>
-                  <button onClick={() => setConfirmReturn(order.order_id)} className='w-full bg-rose-50 text-rose-500 hover:bg-rose-100 p-2.5 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-colors'>
+                  <button onClick={() => setConfirmReturn(order.order_id)} className='w-full bg-slate-50 text-slate-800 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-colors'>
                     <GiReturnArrow size={18} /> Return
                   </button>
                 </div>

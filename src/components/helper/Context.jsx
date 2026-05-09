@@ -94,6 +94,7 @@ const ContextProvider = ({ children, initialSiteData }) => {
             name: product.name,
             image: product.image,
             quantity: 1,
+            stock: stock,
             sale_price: salePrice,
             wholesale_price: wholeSalePrice,
             discount_price: discountAmount,
@@ -109,9 +110,11 @@ const ContextProvider = ({ children, initialSiteData }) => {
     const item = cart.items.find(i => i.cartItemId === cartItemId);
     if (!item) return;
 
-    // We don't have stock info here easily without re-fetching or storing it in item
-    // For now, just increase, assuming if it's in cart it was available.
-    // Ideally we should have stock in the cart item too.
+    if (item.stock && item.quantity >= item.stock) {
+      toast.error(`Only ${item.stock} items available in stock`);
+      return;
+    }
+
     setCart((prev) => ({
       ...prev,
       items: prev.items.map(i =>

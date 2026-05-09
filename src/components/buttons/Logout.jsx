@@ -16,7 +16,7 @@ const Logout = () => {
   }
 }
   return (
-    <button className='w-full flex items-center justify-center text-white gap-3 cursor-pointer bg-orange-300 text-center' onClick={handleLogout}>Logout</button>
+    <button className='w-full flex items-center justify-center text-white gap-3 cursor-pointer bg-slate-300 text-center' onClick={handleLogout}>Logout</button>
   )
 }
 

@@ -21,7 +21,7 @@ const SalesReport = () => {
         fetchReport()
     }, [])
 
-    if (loading) return <div className='w-full min-h-screen flex items-center justify-center font-medium text-sky-400 uppercase tracking-widest text-xs'>Analyzing Sales Data...</div>
+    if (loading) return <div className='w-full min-h-screen flex items-center justify-center font-medium text-slate-400 uppercase tracking-widest text-xs'>Analyzing Sales Data...</div>
 
     return (
         <div className='w-full max-w-7xl mx-auto p-4 md:p-6 flex flex-col gap-8'>
@@ -32,7 +32,7 @@ const SalesReport = () => {
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div className='p-6 bg-white border border-slate-100 rounded-2xl shadow-sm flex flex-col gap-4'>
-                    <div className='w-12 h-12 bg-sky-50 rounded-xl flex items-center justify-center text-sky-500'>
+                    <div className='w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-800'>
                         <TrendingUp size={24} />
                     </div>
                     <div>
@@ -45,7 +45,7 @@ const SalesReport = () => {
                 </div>
 
                 <div className='p-6 bg-white border border-slate-100 rounded-2xl shadow-sm flex flex-col gap-4'>
-                    <div className='w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600'>
+                    <div className='w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-900'>
                         <Package size={24} />
                     </div>
                     <div>
@@ -80,19 +80,19 @@ const SalesReport = () => {
                                     <tr key={idx} className='hover:bg-slate-50/50 transition-colors group'>
                                         <td className='px-6 py-4'>
                                             <div className='flex items-center gap-3'>
-                                                <span className={`w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${idx < 3 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>
+                                                <span className={`w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${idx < 3 ? 'bg-slate-100 text-black' : 'bg-slate-100 text-slate-500'}`}>
                                                     {idx + 1}
                                                 </span>
                                                 <p className='font-bold text-slate-700'>{item.name}</p>
                                             </div>
                                         </td>
                                         <td className='px-6 py-4 text-center'>
-                                            <span className='px-3 py-1 bg-sky-50 text-sky-600 rounded-lg text-sm font-bold'>
+                                            <span className='px-3 py-1 bg-slate-50 text-slate-900 rounded-lg text-sm font-bold'>
                                                 {item.sold_qty}
                                             </span>
                                         </td>
                                         <td className='px-6 py-4 text-right'>
-                                            <span className='font-bold text-emerald-600'>
+                                            <span className='font-bold text-slate-900'>
                                                 ৳{parseFloat(item.revenue || 0).toLocaleString()}
                                             </span>
                                         </td>

@@ -25,15 +25,15 @@ const LatestProducts = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
-        className="flex items-end justify-between mb-8 border-b border-gray-200 pb-4"
+        className="flex items-end justify-between mb-8 border-b border-slate-200 pb-4"
       >
         <div>
-          <p className="text-xs font-semibold text-red-500 uppercase tracking-widest mb-1">New Arrivals</p>
-          <h2 className="text-2xl font-bold text-gray-800">Latest Products</h2>
+          <p className="text-xs font-semibold text-slate-800 uppercase tracking-widest mb-1">New Arrivals</p>
+          <h2 className="text-2xl font-bold text-slate-800">Latest Products</h2>
         </div>
         <a
           href="/products"
-          className="text-sm text-gray-500 hover:text-red-500 transition-colors duration-200 underline underline-offset-4"
+          className="text-sm text-slate-500 hover:text-slate-800 transition-colors duration-200 underline underline-offset-4"
         >
           View All
         </a>
@@ -44,14 +44,14 @@ const LatestProducts = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="aspect-square bg-gray-100 rounded-sm mb-2" />
-              <div className="h-3 bg-gray-100 rounded w-3/4 mb-1" />
-              <div className="h-3 bg-gray-100 rounded w-1/2" />
+              <div className="aspect-square bg-slate-100 rounded-sm mb-2" />
+              <div className="h-3 bg-slate-100 rounded w-3/4 mb-1" />
+              <div className="h-3 bg-slate-100 rounded w-1/2" />
             </div>
           ))}
         </div>
       ) : products.length === 0 ? (
-        <p className="text-center text-gray-400 py-10">No products found.</p>
+        <p className="text-center text-slate-400 py-10">No products found.</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {products.map(product => (

@@ -43,12 +43,12 @@ export default function Reviews() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                     <div className="space-y-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-50 text-sky-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-50 text-slate-900 rounded-full text-[10px] font-black uppercase tracking-widest">
                             <Star size={12} className="fill-current" />
                             Testimonials
                         </div>
                         <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
-                            What Our <span className="text-sky-500">Customers</span> Say
+                            What Our <span className="text-slate-800">Customers</span> Say
                         </h2>
                     </div>
                     
@@ -89,11 +89,11 @@ export default function Reviews() {
                                                 <Star 
                                                     key={i} 
                                                     size={16} 
-                                                    className={i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-slate-200"} 
+                                                    className={i < review.rating ? "fill-slate-400 text-slate-400" : "text-slate-200"} 
                                                 />
                                             ))}
                                         </div>
-                                        <Quote className="text-sky-200 group-hover:text-sky-500 transition-colors" size={32} />
+                                        <Quote className="text-slate-200 group-hover:text-slate-800 transition-colors" size={32} />
                                     </div>
                                     
                                     <div className="space-y-3">

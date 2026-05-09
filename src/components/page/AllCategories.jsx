@@ -46,18 +46,18 @@ const AllCategories = () => {
   }
 
   return (
-    <section className="w-full py-14 px-4 md:px-10 lg:px-20 bg-gray-50">
+    <section className="w-full py-14 px-4 md:px-10 lg:px-20 bg-slate-50">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
-        className="flex items-end justify-between mb-8 border-b border-gray-200 pb-4"
+        className="flex items-end justify-between mb-8 border-b border-slate-200 pb-4"
       >
         <div>
-          <p className="text-xs font-semibold text-violet-500 uppercase tracking-widest mb-1">Shop By</p>
-          <h2 className="text-2xl font-bold text-gray-800">All Categories</h2>
+          <p className="text-xs font-semibold text-slate-800 uppercase tracking-widest mb-1">Shop By</p>
+          <h2 className="text-2xl font-bold text-slate-800">All Categories</h2>
         </div>
 
         <div className="flex items-center gap-2">
@@ -67,8 +67,8 @@ const AllCategories = () => {
             disabled={!canLeft}
             className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-200 ${
               canLeft
-                ? 'border-gray-300 text-gray-600 hover:border-gray-500 hover:text-gray-900'
-                : 'border-gray-100 text-gray-300 cursor-not-allowed'
+                ? 'border-slate-300 text-slate-600 hover:border-slate-500 hover:text-slate-900'
+                : 'border-slate-100 text-slate-300 cursor-not-allowed'
             }`}
           >
             <ChevronLeft size={16} />
@@ -78,8 +78,8 @@ const AllCategories = () => {
             disabled={!canRight}
             className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-200 ${
               canRight
-                ? 'border-gray-300 text-gray-600 hover:border-gray-500 hover:text-gray-900'
-                : 'border-gray-100 text-gray-300 cursor-not-allowed'
+                ? 'border-slate-300 text-slate-600 hover:border-slate-500 hover:text-slate-900'
+                : 'border-slate-100 text-slate-300 cursor-not-allowed'
             }`}
           >
             <ChevronRight size={16} />
@@ -87,7 +87,7 @@ const AllCategories = () => {
 
           <Link
             href="/products"
-            className="ml-2 text-sm text-gray-500 hover:text-violet-500 transition-colors duration-200 underline underline-offset-4"
+            className="ml-2 text-sm text-slate-500 hover:text-slate-800 transition-colors duration-200 underline underline-offset-4"
           >
             View All
           </Link>
@@ -99,13 +99,13 @@ const AllCategories = () => {
         <div className="flex gap-4 overflow-hidden">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="animate-pulse flex-shrink-0 flex flex-col items-center gap-3 p-5 bg-white rounded-xl w-28">
-              <div className="w-14 h-14 rounded-full bg-gray-100" />
-              <div className="h-3 w-14 bg-gray-100 rounded-full" />
+              <div className="w-14 h-14 rounded-full bg-slate-100" />
+              <div className="h-3 w-14 bg-slate-100 rounded-full" />
             </div>
           ))}
         </div>
       ) : categories.length === 0 ? (
-        <p className="text-center text-gray-400 py-10">No categories found.</p>
+        <p className="text-center text-slate-400 py-10">No categories found.</p>
       ) : (
         <div className="relative">
           {/* Scrollable row */}
@@ -122,7 +122,7 @@ const AllCategories = () => {
                 <Link
                   key={cat.category_id}
                   href={`/products/category/${cat.category_id}`}
-                  className="group flex-shrink-0 flex flex-col items-center gap-3 p-5 bg-white rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-md transition-all duration-200 w-28"
+                  className="group flex-shrink-0 flex flex-col items-center gap-3 p-5 bg-white rounded-xl border border-slate-100 hover:border-slate-300 hover:shadow-md transition-all duration-200 w-28"
                 >
                   <div
                     className="w-14 h-14 rounded-full flex items-center justify-center text-xl font-black transition-transform duration-200 group-hover:scale-110"
@@ -130,7 +130,7 @@ const AllCategories = () => {
                   >
                     {initial}
                   </div>
-                  <span className="text-[12px] font-semibold text-gray-700 group-hover:text-gray-900 text-center leading-tight line-clamp-2">
+                  <span className="text-[12px] font-semibold text-slate-700 group-hover:text-slate-900 text-center leading-tight line-clamp-2">
                     {cat.name}
                   </span>
                 </Link>
@@ -140,10 +140,10 @@ const AllCategories = () => {
 
           {/* Fade edges */}
           {canLeft && (
-            <div className="absolute top-0 left-0 h-full w-10 bg-gradient-to-r from-gray-50 to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-0 h-full w-10 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none" />
           )}
           {canRight && (
-            <div className="absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none" />
+            <div className="absolute top-0 right-0 h-full w-10 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none" />
           )}
         </div>
       )}

@@ -26,7 +26,7 @@ const MenuItem = ({ href, icon: Icon, label, isOpen }) => {
       href={href} 
       className={`group flex flex-row gap-4 items-center px-3 py-2.5 transition-all rounded-xl mx-2 ${
         isActive 
-          ? 'bg-linear-to-r from-sky-500 to-indigo-500 text-white shadow-md shadow-sky-500/20 font-medium' 
+          ? 'bg-linear-to-r from-slate-800 to-slate-800 text-white shadow-md shadow-slate-800/20 font-medium' 
           : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
       }`}
     >
@@ -170,7 +170,7 @@ const DashboardSidebar = () => {
             
             <button 
               onClick={downloadDB} 
-              className="flex items-center justify-center gap-2 px-2 py-2.5 text-sm font-semibold bg-slate-800 text-sky-400 rounded-xl hover:bg-slate-700 transition-colors mx-4 my-2 border border-slate-700"
+              className="flex items-center justify-center gap-2 px-2 py-2.5 text-sm font-semibold bg-slate-800 text-slate-400 rounded-xl hover:bg-slate-700 transition-colors mx-4 my-2 border border-slate-700"
             >
               <BsFillHouseGearFill size={16} />
               <span>Backup Data</span>
@@ -192,7 +192,7 @@ const DashboardSidebar = () => {
         {(isOpen) && (
           <button 
             onClick={handleLogout} 
-            className="flex items-center justify-center w-[calc(100%-2rem)] bg-rose-500/10 text-rose-500 py-2.5 rounded-xl mx-4 mt-4 cursor-pointer font-bold hover:bg-rose-500 hover:text-white transition-colors border border-rose-500/20 shadow-sm"
+            className="flex items-center justify-center w-[calc(100%-2rem)] bg-slate-800/10 text-slate-800 py-2.5 rounded-xl mx-4 mt-4 cursor-pointer font-bold hover:bg-slate-800 hover:text-white transition-colors border border-slate-800/20 shadow-sm"
           >
             Logout
           </button>

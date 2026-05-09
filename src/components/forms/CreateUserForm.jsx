@@ -38,7 +38,7 @@ const CreateUserForm = ({ onSuccess, onCancel }) => {
             {/* Header */}
             <div className='flex items-center justify-between p-6 border-b border-slate-100'>
                 <div className='flex items-center gap-2'>
-                    <RiUserAddLine className='text-emerald-500' size={24} />
+                    <RiUserAddLine className='text-slate-800' size={24} />
                     <h2 className='text-lg font-bold text-slate-800 tracking-tight'>Create New Account</h2>
                 </div>
                 <button 
@@ -60,7 +60,7 @@ const CreateUserForm = ({ onSuccess, onCancel }) => {
                             type="text" name='name' id='name' required 
                             placeholder="John Doe"
                             value={formData.name} onChange={changeHandler} 
-                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-sm font-medium text-slate-800' 
+                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-slate-800 focus:ring-4 focus:ring-slate-800/10 transition-all text-sm font-medium text-slate-800' 
                         />
                     </div>
                 </div>
@@ -73,7 +73,7 @@ const CreateUserForm = ({ onSuccess, onCancel }) => {
                             type="email" name='email' id='email' required 
                             placeholder="user@example.com"
                             value={formData.email} onChange={changeHandler} 
-                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-sm font-medium text-slate-800' 
+                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-slate-800 focus:ring-4 focus:ring-slate-800/10 transition-all text-sm font-medium text-slate-800' 
                         />
                     </div>
                 </div>
@@ -86,7 +86,7 @@ const CreateUserForm = ({ onSuccess, onCancel }) => {
                             type="text" name='phone' id='phone' required 
                             placeholder="+880 1XXX XXXXXX"
                             value={formData.phone} onChange={changeHandler} 
-                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-sm font-medium text-slate-800' 
+                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-slate-800 focus:ring-4 focus:ring-slate-800/10 transition-all text-sm font-medium text-slate-800' 
                         />
                     </div>
                 </div>
@@ -99,7 +99,7 @@ const CreateUserForm = ({ onSuccess, onCancel }) => {
                             type="password" name='password' id='password' required 
                             placeholder="••••••••"
                             value={formData.password} onChange={changeHandler} 
-                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-sm font-medium text-slate-800' 
+                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-slate-800 focus:ring-4 focus:ring-slate-800/10 transition-all text-sm font-medium text-slate-800' 
                         />
                     </div>
                 </div>
@@ -111,7 +111,7 @@ const CreateUserForm = ({ onSuccess, onCancel }) => {
                         <select 
                             name="role" id="role" required 
                             value={formData.role} onChange={changeHandler} 
-                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-sm font-medium text-slate-800 bg-white'
+                            className='w-full border border-slate-200 pl-11 pr-4 py-3 rounded-xl outline-none focus:border-slate-800 focus:ring-4 focus:ring-slate-800/10 transition-all text-sm font-medium text-slate-800 bg-white'
                         >
                             <option value="sales">Sales (POS & Orders)</option>
                             <option value="manager">Manager (Inventory & Support)</option>
@@ -134,7 +134,7 @@ const CreateUserForm = ({ onSuccess, onCancel }) => {
                 <button 
                     disabled={isSubmitting}
                     type='submit' 
-                    className='px-8 py-2.5 text-sm font-semibold text-white bg-emerald-500 hover:bg-emerald-600 rounded-xl transition-colors shadow-lg shadow-emerald-200 disabled:opacity-50'
+                    className='px-8 py-2.5 text-sm font-semibold text-white bg-slate-800 hover:bg-slate-900 rounded-xl transition-colors shadow-lg shadow-slate-200 disabled:opacity-50'
                 >
                     {isSubmitting ? 'Creating...' : 'Create Account'}
                 </button>

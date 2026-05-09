@@ -34,7 +34,7 @@ const BrandPage = () => {
         </div>
         <button 
           onClick={() => setIsBrandBox(true)}
-          className='flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm shadow-sky-200 active:scale-95 whitespace-nowrap'
+          className='flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm shadow-slate-200 active:scale-95 whitespace-nowrap'
         >
           <RiAddLine size={20} />
           <span>Add New Brand</span>
@@ -78,7 +78,7 @@ const BrandPage = () => {
                           setEditBrand(brand);
                           setIsBrandBox(true);
                         }}
-                        className='inline-flex items-center justify-center p-2 rounded-lg text-sky-500 hover:bg-sky-50 hover:text-sky-600 transition-colors'
+                        className='inline-flex items-center justify-center p-2 rounded-lg text-slate-800 hover:bg-slate-50 hover:text-slate-900 transition-colors'
                         title="Edit Brand"
                       >
                         <RiEdit2Line size={18} /> 
@@ -86,7 +86,7 @@ const BrandPage = () => {
                       <button 
                         disabled={loadingId === brand.brand_id}
                         onClick={() => removeBrand(brand.brand_id)}
-                        className='inline-flex items-center justify-center p-2 rounded-lg text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition-colors disabled:opacity-50'
+                        className='inline-flex items-center justify-center p-2 rounded-lg text-slate-800 hover:bg-slate-50 hover:text-slate-900 transition-colors disabled:opacity-50'
                         title="Delete Brand"
                       >
                         <RiDeleteBinLine size={18} />

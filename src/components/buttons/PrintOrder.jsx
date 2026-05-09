@@ -94,7 +94,7 @@ const PrintOrder = ({ order }) => {
   }
 
   return (
-    <button onClick={printOrder} className='mt-4 flex items-center justify-center gap-2 bg-gray-100 w-full py-2 rounded-lg hover:bg-gray-200 text-black  transition-all'>
+    <button onClick={printOrder} className='mt-4 flex items-center justify-center gap-2 bg-slate-100 w-full py-2 rounded-lg hover:bg-slate-200 text-black  transition-all'>
       <FaPrint /> <span>Print Receipt</span>
     </button>
   )

@@ -66,16 +66,16 @@ const ReturnedOrdersPage = () => {
           <h1 className='text-2xl font-bold text-slate-800 tracking-tight'>Returned Orders</h1>
           <p className='text-sm text-slate-500 mt-1'>View orders that have been returned by customers</p>
         </div>
-        <div className='bg-rose-50 px-4 py-2 rounded-xl border border-rose-100'>
-          <span className='text-rose-700 font-bold'>{orders.length}</span>
-          <span className='text-rose-600 text-xs uppercase tracking-wider ml-2 font-bold'>Returned</span>
+        <div className='bg-slate-50 px-4 py-2 rounded-xl border border-slate-100'>
+          <span className='text-black font-bold'>{orders.length}</span>
+          <span className='text-slate-900 text-xs uppercase tracking-wider ml-2 font-bold'>Returned</span>
         </div>
       </div>
 
       {/* Orders List */}
       <div className='w-full flex flex-col gap-4'>
         {loading ? (
-           <p className='text-center text-sky-400 animate-pulse font-bold py-20'>Fetching Returned Orders...</p>
+           <p className='text-center text-slate-400 animate-pulse font-bold py-20'>Fetching Returned Orders...</p>
         ) : orders.length === 0 ? (
           <div className='w-full h-64 flex flex-col items-center justify-center text-center gap-3 p-6 bg-white rounded-2xl shadow-sm border border-slate-100'>
              <p className='text-slate-600 font-semibold'>No Returned Orders</p>
@@ -87,7 +87,7 @@ const ReturnedOrdersPage = () => {
             {/* Customer & Date Info */}
             <div className='md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-4 flex flex-col justify-center'>
                 <div className='flex items-center gap-2 mb-2'>
-                  <span className='text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-rose-100 text-rose-700'>
+                  <span className='text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-slate-100 text-black'>
                     Returned
                   </span>
                   <span className='text-[10px] text-slate-400 font-bold uppercase'>
@@ -107,7 +107,7 @@ const ReturnedOrdersPage = () => {
                         order.product_list.map((product, pIdx) => (
                             <div key={pIdx} className='flex justify-between items-center text-sm'>
                                 <p className='font-bold text-slate-700 truncate pr-2 flex-1'>
-                                  <span className='text-sky-500 font-black mr-2'>x{product.quantity}</span>
+                                  <span className='text-slate-800 font-black mr-2'>x{product.quantity}</span>
                                   {product.name}
                                 </p>
                                 <p className='font-black text-slate-900'>
@@ -127,13 +127,13 @@ const ReturnedOrdersPage = () => {
                     <span>Gross Total</span>
                     <span>৳{order.total_amount}</span>
                 </div>
-                <div className='flex justify-between text-xs text-rose-500 font-medium'>
+                <div className='flex justify-between text-xs text-slate-800 font-medium'>
                     <span>Discount</span>
                     <span>- ৳{order.discount || 0}</span>
                 </div>
                 <div className='flex justify-between items-center border-t border-slate-200 pt-2 mt-1'>
-                    <span className='text-[10px] font-black text-rose-600 uppercase tracking-wider'>Total Refunded</span>
-                    <span className='text-xl font-black text-rose-600'>৳{Number(order.paid_amount || order.amount_received || 0).toLocaleString()}</span>
+                    <span className='text-[10px] font-black text-slate-900 uppercase tracking-wider'>Total Refunded</span>
+                    <span className='text-xl font-black text-slate-900'>৳{Number(order.paid_amount || order.amount_received || 0).toLocaleString()}</span>
                 </div>
             </div>
 
@@ -143,7 +143,7 @@ const ReturnedOrdersPage = () => {
                     <div className='flex flex-col gap-2 w-full animate-in fade-in zoom-in duration-200'>
                         <button
                             onClick={() => deleteOrder(order.order_id)}
-                            className='w-full bg-rose-500 hover:bg-rose-600 text-white p-2.5 rounded-xl flex items-center justify-center transition-colors'
+                            className='w-full bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center transition-colors'
                             title="Confirm Delete"
                         >
                             <FaCheck />
@@ -159,7 +159,7 @@ const ReturnedOrdersPage = () => {
                 ) : (
                     <div className='w-full grid grid-cols-2 md:grid-cols-1 gap-2'>
                         {order.status === 'pending' && (
-                          <button onClick={() => confirmOrder(order.order_id)} className='bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl flex items-center justify-center transition-colors col-span-2' title="Confirm Order">
+                          <button onClick={() => confirmOrder(order.order_id)} className='bg-slate-800 hover:bg-slate-900 text-white p-2.5 rounded-xl flex items-center justify-center transition-colors col-span-2' title="Confirm Order">
                             <GiConfirmed size={20} className="mr-2" />
                             <span className="md:hidden font-bold">Confirm</span>
                           </button>
@@ -167,7 +167,7 @@ const ReturnedOrdersPage = () => {
                         <button onClick={() => printOrder(order)} className='bg-slate-50 text-slate-600 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="Print Order">
                           <FaPrint size={18} />
                         </button>
-                        <button onClick={() => setConfirmDelete(order.order_id)} className='bg-rose-50 text-rose-500 hover:bg-rose-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="Delete Order">
+                        <button onClick={() => setConfirmDelete(order.order_id)} className='bg-slate-50 text-slate-800 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="Delete Order">
                           <MdDelete size={18} />
                         </button>
                     </div>

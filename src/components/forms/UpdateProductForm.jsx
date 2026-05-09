@@ -171,7 +171,7 @@ const UpdateProductForm = ({ product }) => {
                     </div>
                     <div className='flex flex-col gap-1.5'>
                         <label htmlFor="discount_price" className='text-xs font-bold text-slate-500 uppercase tracking-wider ml-1'>Discount Price</label>
-                        <input type="number" step="0.01" name='discount_price' id='discount_price' value={formData.discount_price} onChange={handleChange} className='w-full border border-slate-200 bg-slate-50/30 px-4 py-2.5 rounded-xl outline-none focus:border-primary focus:bg-white transition-all text-sm text-rose-600 font-bold' />
+                        <input type="number" step="0.01" name='discount_price' id='discount_price' value={formData.discount_price} onChange={handleChange} className='w-full border border-slate-200 bg-slate-50/30 px-4 py-2.5 rounded-xl outline-none focus:border-primary focus:bg-white transition-all text-sm text-slate-900 font-bold' />
                     </div>
                     <div className='flex flex-col gap-1.5'>
                         <label htmlFor="wholesale_price" className='text-xs font-bold text-slate-500 uppercase tracking-wider ml-1'>Wholesale Price *</label>

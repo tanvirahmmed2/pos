@@ -31,7 +31,7 @@ const CustomerPage = () => {
           <p className='text-sm text-slate-500 mt-1'>Manage your customer intelligence and orders</p>
         </div>
         <div className='flex flex-col sm:flex-row gap-4 w-full sm:w-auto'>
-          <div className='flex items-center gap-2 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200 focus-within:border-sky-400 focus-within:ring-4 focus-within:ring-sky-100/50 transition-all w-full sm:w-64'>
+          <div className='flex items-center gap-2 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200 focus-within:border-slate-400 focus-within:ring-4 focus-within:ring-slate-100/50 transition-all w-full sm:w-64'>
             <RiSearchLine className='text-slate-400' size={18} />
             <input 
               type="text" 
@@ -43,7 +43,7 @@ const CustomerPage = () => {
           </div>
           <button 
             onClick={() => setIsCustomerBox(true)}
-            className='flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm shadow-sky-200 active:scale-95 whitespace-nowrap w-full sm:w-auto'
+            className='flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm shadow-slate-200 active:scale-95 whitespace-nowrap w-full sm:w-auto'
           >
             <RiAddLine size={20} />
             <span>Add Customer</span>
@@ -71,7 +71,7 @@ const CustomerPage = () => {
               >
                 <div className='flex justify-between items-start mb-4'>
                   <div>
-                    <h2 className='font-bold text-slate-800 group-hover:text-sky-600 transition-colors'>
+                    <h2 className='font-bold text-slate-800 group-hover:text-slate-900 transition-colors'>
                       {customer.name}
                     </h2>
                     <p className='text-xs font-mono text-slate-500 bg-slate-50 px-2 py-1 rounded-lg mt-2 inline-block'>
@@ -87,7 +87,7 @@ const CustomerPage = () => {
                   </div>
                   <div className='flex flex-col items-end'>
                     <span className='text-[10px] uppercase text-slate-400 font-bold tracking-wider'>Value</span>
-                    <p className='text-lg font-black text-emerald-600'>৳{parseFloat(customer.total_purchased_amount || 0).toLocaleString()}</p>
+                    <p className='text-lg font-black text-slate-900'>৳{parseFloat(customer.total_purchased_amount || 0).toLocaleString()}</p>
                   </div>
                 </div>
               </div>

@@ -55,7 +55,7 @@ const Navbar = () => {
           ) : (
             <Link
               href={'/login'}
-              className='flex items-center gap-2 px-4 py-1.5 bg-black text-white rounded-full font-semibold text-sm hover:bg-gray-800 transition-all shadow-sm active:scale-95'
+              className='flex items-center gap-2 px-4 py-1.5 bg-black text-white rounded-full font-semibold text-sm hover:bg-slate-800 transition-all shadow-sm active:scale-95'
             >
               <User size={15} />
               <span className='hidden sm:inline'>Login</span>
@@ -159,7 +159,7 @@ const UserMenu = ({ userData, handleLogout }) => {
             <div className='border-t border-slate-100 py-1.5'>
               <button
                 onClick={() => { setOpen(false); handleLogout(); }}
-                className='w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 font-semibold hover:bg-red-50 transition-colors text-left'
+                className='w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-800 font-semibold hover:bg-slate-50 transition-colors text-left'
               >
                 <LogOut size={15} />
                 Logout
