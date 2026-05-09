@@ -114,10 +114,8 @@ const SalesListPage = () => {
             <div className='md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-4 flex flex-col justify-center'>
                 <div className='flex items-center gap-2 mb-2'>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${
-                    order.status === 'pending' ? 'bg-amber-100 text-amber-700' :
                     order.status === 'returned' ? 'bg-rose-100 text-rose-700' :
-                    order.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' :
-                    'bg-sky-100 text-sky-700'
+                    'bg-emerald-100 text-emerald-700'
                   }`}>
                     {order.status || 'Delivered'}
                   </span>
@@ -189,12 +187,7 @@ const SalesListPage = () => {
                     </div>
                 ) : (
                     <div className='w-full grid grid-cols-2 md:grid-cols-1 gap-2'>
-                        {order.status === 'pending' && (
-                          <button onClick={() => confirmOrder(order.order_id)} className='bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 rounded-xl flex items-center justify-center transition-colors' title="Confirm Order">
-                            <GiConfirmed size={18} />
-                          </button>
-                        )}
-                        <Link href={`/dashboard/pos/${order.order_id}`} className='bg-sky-50 text-sky-600 hover:bg-sky-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="View Invoice">
+                        <Link href={`/dashboard/sales/pos/${order.order_id}`} className='bg-sky-50 text-sky-600 hover:bg-sky-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="View Invoice">
                           <LuView size={18} />
                         </Link>
                         <button onClick={() => generateReceipt(order, siteData)} className='bg-slate-50 text-slate-600 hover:bg-slate-100 p-2.5 rounded-xl flex items-center justify-center transition-colors' title="Print Receipt">

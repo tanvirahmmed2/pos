@@ -3,11 +3,11 @@ import { pool } from "@/lib/database/db";
 import { getTenant } from "@/lib/database/tenant";
 import { NextResponse } from "next/server";
 import slugify from "slugify";
-import { isAdmin, isManagement } from "@/lib/middleware";
+import { isAdmin, isManagement, isManager } from "@/lib/middleware";
 
 export async function POST(req) {
     try {
-        const auth = await isAdmin();
+        const auth = await isManager();
         if (!auth.success) return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
         const website = await getTenant();
         if (!website) {
@@ -16,7 +16,7 @@ export async function POST(req) {
         const tenant_id = website.tenant_id;
 
         const formData = await req.formData();
-        
+
         const name = formData.get("name");
         const description = formData.get('description');
         const category_id = parseInt(formData.get('categoryId') || formData.get('category_id'));
@@ -56,7 +56,7 @@ export async function POST(req) {
             const slug = slugify(name.trim(), { lower: true, strict: true });
 
             const isExists = await client.query(
-                `SELECT product_id FROM ecom_products WHERE (slug=$1 OR barcode=$2) AND tenant_id = $3`, 
+                `SELECT product_id FROM ecom_products WHERE (slug=$1 OR barcode=$2) AND tenant_id = $3`,
                 [slug, barcode, tenant_id]
             );
             if (isExists.rowCount > 0) {
@@ -93,7 +93,7 @@ export async function POST(req) {
             const values = [
                 name, description, category_id, sub_category_id, brand_id, slug, barcode, unit,
                 computedStock, purchase_price, sale_price, discount_price,
-                wholesale_price, retail_price, dealer_price, 
+                wholesale_price, retail_price, dealer_price,
                 cloudImage.secure_url, cloudImage.public_id, tenant_id
             ];
 
@@ -113,7 +113,7 @@ export async function POST(req) {
 
             await client.query('COMMIT');
             return NextResponse.json({
-                success: true, 
+                success: true,
                 message: `Successfully added product. Barcode: ${barcode}`,
                 payload: productToReturn
             }, { status: 201 });
@@ -165,7 +165,7 @@ export async function GET(req) {
 
         if (!result || result.length === 0) {
             return NextResponse.json({
-                success: false, 
+                success: false,
                 message: 'No product found'
             }, { status: 400 });
         }
@@ -183,7 +183,7 @@ export async function GET(req) {
 
     } catch (error) {
         return NextResponse.json({
-            success: false, 
+            success: false,
             message: error.message
         }, { status: 500 });
     }
@@ -192,7 +192,7 @@ export async function GET(req) {
 
 export async function DELETE(req) {
     try {
-        const auth = await isAdmin();
+        const auth = await isManager();
         if (!auth.success) return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
         const website = await getTenant();
         if (!website) {
@@ -256,7 +256,7 @@ export async function DELETE(req) {
 export async function PUT(req) {
     const client = await pool.connect();
     try {
-        const auth = await isAdmin();
+        const auth = await isManager();
         if (!auth.success) return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
         const website = await getTenant();
         if (!website) {
@@ -286,7 +286,7 @@ export async function PUT(req) {
         const wholesale_price = parseFloat(formData.get('wholeSalePrice') || formData.get('wholesale_price')) || 0;
         const retail_price = parseFloat(formData.get('retailPrice') || formData.get('retail_price')) || 0;
         const dealer_price = parseFloat(formData.get('dealerPrice') || formData.get('dealer_price')) || 0;
-        
+
         const computedStock = parseFloat(formData.get('stock')) || 0;
 
         await client.query('BEGIN');
@@ -381,4 +381,4 @@ export async function PUT(req) {
     } finally {
         client.release();
     }
-}
+}

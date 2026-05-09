@@ -152,7 +152,6 @@ const DashboardSidebar = () => {
             <MenuItem href="/dashboard/manager/return-orders" icon={RiRefund2Line} label="Return Orders" isOpen={isOpen} />
             <MenuItem href="/dashboard/manager/reviews" icon={RiStarLine} label="Customer Reviews" isOpen={isOpen} />
             <MenuItem href="/dashboard/manager/support" icon={RiSuperscript} label="Support Tickets" isOpen={isOpen} />
-            <MenuItem href="/dashboard/help" icon={RiUserCommunityLine} label="Help Center" isOpen={isOpen} />
           </>
         )}
 

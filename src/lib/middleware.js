@@ -15,18 +15,18 @@ async function getAuthenticatedUser() {
         if (!website) return null;
         const tenant_id = website.tenant_id;
 
-        const cookieStore = await cookies(); 
+        const cookieStore = await cookies();
         const token = cookieStore.get('nvs_user_token')?.value;
 
         if (!token) return null;
 
         const decoded = jwt.verify(token, JWT_SECRET);
-        
+
         // Use ecom_users as the single source of truth for all roles
         const res = await pool.query(
             `SELECT user_id, name, email, phone, role, created_at 
              FROM ecom_users 
-             WHERE user_id = $1 AND tenant_id = $2 AND is_active = TRUE`, 
+             WHERE user_id = $1 AND tenant_id = $2 AND is_active = TRUE`,
             [decoded.user_id || decoded.id, tenant_id]
         );
 
@@ -45,7 +45,7 @@ export async function isUserLogin() {
 export async function isAdmin() {
     const user = await getAuthenticatedUser();
     if (!user) return { success: false, message: 'Please login' };
-    
+
     if (user.role !== 'admin') {
         return { success: false, message: 'Access denied: Admin only' };
     }
@@ -57,7 +57,7 @@ export async function isAdmin() {
 export async function isManager() {
     const user = await getAuthenticatedUser();
     if (!user) return { success: false, message: 'Please login' };
-    
+
     if (user.role !== 'manager') {
         return { success: false, message: 'Access denied: Managers only' };
     }
@@ -67,7 +67,7 @@ export async function isManager() {
 export async function isSales() {
     const user = await getAuthenticatedUser();
     if (!user) return { success: false, message: 'Please login' };
-    
+
     if (user.role !== 'sales') {
         return { success: false, message: 'Access denied: Sales staff only' };
     }
@@ -77,7 +77,7 @@ export async function isSales() {
 export async function isManagement() {
     const user = await getAuthenticatedUser();
     if (!user) return { success: false, message: 'Please login' };
-    
+
     const managementRoles = ['admin', 'manager', 'sales'];
     if (!managementRoles.includes(user.role)) {
         return { success: false, message: 'Access denied: Management roles only' };

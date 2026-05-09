@@ -187,7 +187,7 @@ const Orderform = ({ cartItems = [] }) => {
                 createdAt: new Date().toISOString().split('T')[0]
             })
             setSaleType('retail')
-            router.push(`/dashboard/pos/${response.data.payload.order_id}`)
+            router.push(`/dashboard/sales/pos/${response.data.payload.order_id}`)
         } catch (error) {
             toast.error(error?.response?.data?.message || "Checkout failed")
         }

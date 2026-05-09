@@ -6,7 +6,6 @@ import { isAdmin } from "@/lib/middleware";
 
 export async function POST(req) {
     try {
-        // Only admin can create new accounts
         const auth = await isAdmin();
         if (!auth.success) {
             return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
@@ -83,6 +82,7 @@ export async function GET(req) {
 }
 
 export async function PUT(req) {
+    const client = await pool.connect();
     try {
         const website = await getTenant();
         if (!website) {
@@ -90,49 +90,85 @@ export async function PUT(req) {
         }
         const tenant_id = website.tenant_id;
 
-        const { user_id, name, phone, email, password, role, is_active } = await req.json();
-        const client = await pool.connect();
+        const body = await req.json();
+        const { user_id, role } = body;
 
-        try {
-            let query;
-            let values;
-
-            if (password) {
-                const salt = await bcrypt.genSalt(10);
-                const hashedPassword = await bcrypt.hash(password, salt);
-                query = `
-                    UPDATE ecom_users 
-                    SET name = $1, phone = $2, email = $3, password = $4, role = $5, is_active = $6
-                    WHERE user_id = $7 AND tenant_id = $8
-                    RETURNING user_id, name, email, phone, role;
-                `;
-                values = [name, phone, email, hashedPassword, role, is_active, user_id, tenant_id];
-            } else {
-                query = `
-                    UPDATE ecom_users 
-                    SET name = $1, phone = $2, email = $3, role = $4, is_active = $5
-                    WHERE user_id = $6 AND tenant_id = $7
-                    RETURNING user_id, name, email, phone, role;
-                `;
-                values = [name, phone, email, role, is_active, user_id, tenant_id];
-            }
-
-            const result = await client.query(query, values);
-
-            if (result.rowCount === 0) {
-                return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
-            }
-
-            return NextResponse.json({ success: true, message: "User updated", payload: result.rows[0] });
-        } finally {
-            client.release();
+        if (!user_id) {
+            return NextResponse.json({ success: false, message: "User ID is required" }, { status: 400 });
         }
+
+        await client.query('BEGIN');
+
+        // 1. Fetch current user data
+        const userRes = await client.query(
+            "SELECT * FROM ecom_users WHERE user_id = $1 AND tenant_id = $2",
+            [user_id, tenant_id]
+        );
+        if (userRes.rowCount === 0) throw new Error("User not found");
+        const currentUser = userRes.rows[0];
+
+        // 2. SAFETY CHECK: Block if trying to demote the last admin
+        if (currentUser.role === 'admin' && role !== 'admin') {
+            const adminCountRes = await client.query(
+                "SELECT COUNT(*) FROM ecom_users WHERE role = 'admin' AND tenant_id = $1",
+                [tenant_id]
+            );
+            if (parseInt(adminCountRes.rows[0].count) <= 1) {
+                throw new Error("Cannot demote the last administrator. Please promote another user to admin first.");
+            }
+        }
+
+        // 3. Partial Update Logic
+        const fields = [];
+        const values = [];
+        let placeholderIdx = 1;
+
+        const updatableFields = ['name', 'phone', 'email', 'role', 'is_active'];
+        for (const field of updatableFields) {
+            if (body[field] !== undefined) {
+                fields.push(`${field} = $${placeholderIdx++}`);
+                values.push(body[field]);
+            }
+        }
+
+        if (body.password) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(body.password, salt);
+            fields.push(`password = $${placeholderIdx++}`);
+            values.push(hashedPassword);
+        }
+
+        if (fields.length === 0) {
+            throw new Error("No fields provided for update");
+        }
+
+        values.push(user_id, tenant_id);
+        const query = `
+            UPDATE ecom_users 
+            SET ${fields.join(', ')}, updated_at = NOW()
+            WHERE user_id = $${placeholderIdx++} AND tenant_id = $${placeholderIdx++}
+            RETURNING user_id, name, email, phone, role, is_active;
+        `;
+
+        const result = await client.query(query, values);
+        await client.query('COMMIT');
+
+        return NextResponse.json({ 
+            success: true, 
+            message: "User updated successfully", 
+            payload: result.rows[0] 
+        });
+
     } catch (error) {
+        if (client) await client.query('ROLLBACK');
         return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    } finally {
+        client.release();
     }
 }
 
 export async function DELETE(req) {
+    const client = await pool.connect();
     try {
         const website = await getTenant();
         if (!website) {
@@ -142,19 +178,39 @@ export async function DELETE(req) {
 
         const { id } = await req.json();
 
-        const result = await pool.query("DELETE FROM ecom_users WHERE user_id = $1 AND tenant_id = $2", [id, tenant_id]);
-        
-        if (result.rowCount === 0) {
-            return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+        await client.query('BEGIN');
+
+        // 1. Check if user is admin
+        const userRes = await client.query(
+            "SELECT role FROM ecom_users WHERE user_id = $1 AND tenant_id = $2",
+            [id, tenant_id]
+        );
+        if (userRes.rowCount === 0) throw new Error("User not found");
+
+        if (userRes.rows[0].role === 'admin') {
+            const adminCountRes = await client.query(
+                "SELECT COUNT(*) FROM ecom_users WHERE role = 'admin' AND tenant_id = $1",
+                [tenant_id]
+            );
+            if (parseInt(adminCountRes.rows[0].count) <= 1) {
+                throw new Error("Cannot delete the last administrator.");
+            }
         }
+
+        const result = await client.query("DELETE FROM ecom_users WHERE user_id = $1 AND tenant_id = $2", [id, tenant_id]);
+        await client.query('COMMIT');
 
         return NextResponse.json({ success: true, message: "Account deleted successfully" });
     } catch (error) {
+        if (client) await client.query('ROLLBACK');
         return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    } finally {
+        client.release();
     }
 }
 
 export async function PATCH(req) {
+    const client = await pool.connect();
     try {
         const website = await getTenant();
         if (!website) {
@@ -168,7 +224,27 @@ export async function PATCH(req) {
             return NextResponse.json({ success: false, message: "Email and Role are required" }, { status: 400 });
         }
 
-        const res = await pool.query(
+        await client.query('BEGIN');
+
+        // 1. Fetch current role
+        const userRes = await client.query(
+            "SELECT role FROM ecom_users WHERE email = $1 AND tenant_id = $2",
+            [email, tenant_id]
+        );
+        if (userRes.rowCount === 0) throw new Error("User not found");
+
+        // 2. Safety check: Block if demoting last admin
+        if (userRes.rows[0].role === 'admin' && role !== 'admin') {
+            const adminCountRes = await client.query(
+                "SELECT COUNT(*) FROM ecom_users WHERE role = 'admin' AND tenant_id = $1",
+                [tenant_id]
+            );
+            if (parseInt(adminCountRes.rows[0].count) <= 1) {
+                throw new Error("Cannot demote the last administrator.");
+            }
+        }
+
+        const res = await client.query(
             `UPDATE ecom_users 
              SET role = $1 
              WHERE email = $2 AND tenant_id = $3 
@@ -176,16 +252,17 @@ export async function PATCH(req) {
             [role, email, tenant_id]
         );
 
-        if (res.rowCount === 0) {
-            return NextResponse.json({ success: false, message: "User with this email not found in your store" }, { status: 404 });
-        }
+        await client.query('COMMIT');
 
         return NextResponse.json({
             success: true,
-            message: `User promoted to ${role} successfully`,
+            message: `User role updated to ${role} successfully`,
             payload: res.rows[0]
         });
     } catch (error) {
+        if (client) await client.query('ROLLBACK');
         return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    } finally {
+        client.release();
     }
 }

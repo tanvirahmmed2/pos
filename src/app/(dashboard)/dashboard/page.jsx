@@ -120,7 +120,7 @@ const Dashboard = () => {
 
             {/* Overview Grid */}
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4'>
-                <StatCard title="Confirmed Orders" value={overview?.total_confirmed_orders} icon={<ShoppingCart size={20} />} />
+                <StatCard title="Successful Sales" value={overview?.total_confirmed_orders} icon={<ShoppingCart size={20} />} />
                 <StatCard title="Products" value={overview?.total_products} icon={<Package size={20} />} />
                 <StatCard title="Total Sales" value={`৳${Number(overview?.total_sales_amount).toLocaleString()}`} icon={<BarChart3 size={20} />} />
                 

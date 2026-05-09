@@ -36,7 +36,7 @@ const POSSLIPPAGE = ({ params }) => {
         <div className="fixed inset-0 flex items-center justify-center bg-stone-50">
             <div className="text-center">
                 <p className="text-xs uppercase tracking-widest text-red-400">Slip not found</p>
-                <Link href="/dashboard/pos" className="mt-4 inline-block text-[10px] underline">Back to POS</Link>
+                <Link href="/dashboard/sales/pos" className="mt-4 inline-block text-[10px] underline">Back to POS</Link>
             </div>
         </div>
     )
@@ -162,7 +162,7 @@ const POSSLIPPAGE = ({ params }) => {
                         Print Receipt
                     </button>
                     <Link 
-                        href="/dashboard/pos" 
+                        href="/dashboard/sales/pos" 
                         className="w-full text-center py-3 text-[10px] font-bold uppercase tracking-widest border border-gray-200 rounded text-gray-500 hover:bg-gray-50"
                     >
                         Return to POS
