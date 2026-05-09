@@ -76,9 +76,6 @@ const UserLoginForm = () => {
         <Link href="/recoverid" className='text-[11px] font-bold text-slate-400 hover:text-primary transition-colors'>
           Forgot password?
         </Link>
-        <Link href="/register" className='text-[11px] font-bold text-primary hover:underline'>
-          Create Account
-        </Link>
       </div>
 
       <button 

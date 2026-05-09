@@ -1,20 +1,20 @@
 'use client'
 import PromoteUserForm from '@/components/forms/PromoteUserForm'
+import CreateUserForm from '@/components/forms/CreateUserForm'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { RiUserSharedLine, RiDeleteBinLine, RiArchiveLine, RiShieldUserLine } from 'react-icons/ri'
+import { RiUserSharedLine, RiUserAddLine, RiArchiveLine, RiShieldUserLine } from 'react-icons/ri'
 
 const RolemanagementPage = () => {
   const [staffs, setStaffs] = useState([])
   const [isPromoteBox, setIsPromoteBox] = useState(false)
+  const [isCreateBox, setIsCreateBox] = useState(false)
   const [loadingId, setLoadingId] = useState(null)
 
   const fetchStaff = async () => {
     try {
       const response = await axios.get('/api/user', { withCredentials: true })
-      // We filter to show only those who have special roles or all users?
-      // Usually role management is for staff. 
       setStaffs(response.data.payload || [])
     } catch (error) {
       console.log(error)
@@ -30,10 +30,7 @@ const RolemanagementPage = () => {
     if (!window.confirm("Are you sure you want to demote this user to standard 'user' role?")) return;
     setLoadingId(id)
     try {
-      // Instead of deleting, let's just demote them if the user clicks remove?
-      // Or should we delete the account? User said "remove staff related thing".
-      // I'll stick to updating role to 'user' as a "removal" from staff list.
-      const response = await axios.put('/api/user', { user_id: id, role: 'user' }, { withCredentials: true })
+      await axios.put('/api/user', { user_id: id, role: 'user' }, { withCredentials: true })
       toast.success("User demoted successfully")
       fetchStaff()
     } catch (error) {
@@ -52,15 +49,24 @@ const RolemanagementPage = () => {
             <RiShieldUserLine className='text-sky-500' />
             Role Management
           </h1>
-          <p className='text-sm text-slate-500 mt-1'>Promote existing users to administrative roles</p>
+          <p className='text-sm text-slate-500 mt-1'>Manage your team and their permissions</p>
         </div>
-        <button 
-          onClick={() => setIsPromoteBox(true)}
-          className='flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-sky-200 active:scale-95 whitespace-nowrap'
-        >
-          <RiUserSharedLine size={20} />
-          <span>Promote User</span>
-        </button>
+        <div className='flex items-center gap-3'>
+          <button 
+            onClick={() => setIsPromoteBox(true)}
+            className='flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl font-medium transition-colors active:scale-95 whitespace-nowrap border border-slate-200'
+          >
+            <RiUserSharedLine size={20} className='text-sky-500' />
+            <span>Promote Existing</span>
+          </button>
+          <button 
+            onClick={() => setIsCreateBox(true)}
+            className='flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-emerald-200 active:scale-95 whitespace-nowrap'
+          >
+            <RiUserAddLine size={20} />
+            <span>Create New</span>
+          </button>
+        </div>
       </div>
 
       {/* Content */}
@@ -72,7 +78,7 @@ const RolemanagementPage = () => {
             </div>
             <div>
               <p className='text-slate-600 font-semibold'>No Admin/Staff Found</p>
-              <p className='text-slate-400 text-sm mt-1'>Promote a user to give them dashboard access.</p>
+              <p className='text-slate-400 text-sm mt-1'>Create or promote a user to give them dashboard access.</p>
             </div>
           </div>
         ) : (
@@ -126,7 +132,7 @@ const RolemanagementPage = () => {
         )}
       </div>
 
-      {/* Form Modal */}
+      {/* Promote Modal */}
       {isPromoteBox && (
         <div className='fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4'>
           <div className='bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200'>
@@ -136,6 +142,21 @@ const RolemanagementPage = () => {
                 fetchStaff()
               }} 
               onCancel={() => setIsPromoteBox(false)} 
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Create Modal */}
+      {isCreateBox && (
+        <div className='fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4'>
+          <div className='bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200'>
+            <CreateUserForm 
+              onSuccess={() => {
+                setIsCreateBox(false)
+                fetchStaff()
+              }} 
+              onCancel={() => setIsCreateBox(false)} 
             />
           </div>
         </div>

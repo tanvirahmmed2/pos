@@ -27,6 +27,13 @@ export async function POST(req) {
         }
 
         const user = existsUser.rows[0];
+        
+        // Only allow management roles to login
+        const managementRoles = ['admin', 'manager', 'sales'];
+        if (!managementRoles.includes(user.role)) {
+            return NextResponse.json({ success: false, message: 'Access denied: Customer login is disabled' }, { status: 403 });
+        }
+
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return NextResponse.json({ success: false, message: 'Incorrect password' }, { status: 400 });

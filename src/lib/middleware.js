@@ -73,3 +73,14 @@ export async function isSales() {
     }
     return { success: true, payload: user };
 }
+
+export async function isManagement() {
+    const user = await getAuthenticatedUser();
+    if (!user) return { success: false, message: 'Please login' };
+    
+    const managementRoles = ['admin', 'manager', 'sales'];
+    if (!managementRoles.includes(user.role)) {
+        return { success: false, message: 'Access denied: Management roles only' };
+    }
+    return { success: true, payload: user };
+}

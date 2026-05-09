@@ -1,6 +1,7 @@
 import { pool } from "@/lib/database/db";
 import { getTenant } from "@/lib/database/tenant";
 import { NextResponse } from "next/server";
+import { isSales, isAdmin, isManagement } from "@/lib/middleware";
 
 async function getOrderDetails(client, orderId, tenantId) {
     const res = await client.query(`
@@ -20,24 +21,30 @@ async function getOrderDetails(client, orderId, tenantId) {
     return res.rows[0];
 }
 
-// ─── POST — Place new order (staff/POS) ───────────────────────────────────────
+// ─── POST — Place new order (sales/POS) ───────────────────────────────────────
 export async function POST(req) {
     const client = await pool.connect();
     try {
+        const auth = await isSales();
+        if (!auth.success) {
+            return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
+        }
+
         const website = await getTenant();
         if (!website) return NextResponse.json({ success: false, message: 'Website/Tenant not found' }, { status: 404 });
         const tenant_id = website.tenant_id;
 
         const body = await req.json();
-        const { customer_id, phone, items, subtotal, discount, total, paid_amount, change_amount, paymentMethod, transactionId, status, createdAt } = body;
+        const { customer_id, phone, items, subtotal, discount, total, paid_amount, change_amount, paymentMethod, transactionId, createdAt } = body;
         if (!customer_id) throw new Error("Customer ID is required");
 
         await client.query('BEGIN');
 
+        // Force status to 'delivered' as per requirements
         const orderRes = await client.query(
             `INSERT INTO ecom_orders (customer_id, phone, subtotal_amount, total_discount_amount, total_amount, status, created_at, tenant_id) 
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING order_id`,
-            [customer_id, phone, subtotal, discount, total, status || 'confirmed', createdAt || new Date(), tenant_id]
+            [customer_id, phone, subtotal, discount, total, 'delivered', createdAt || new Date(), tenant_id]
         );
         const orderId = orderRes.rows[0].order_id;
 
@@ -46,25 +53,25 @@ export async function POST(req) {
                 "INSERT INTO ecom_order_items (order_id, product_id, quantity, price, tenant_id) VALUES ($1, $2, $3, $4, $5)",
                 [orderId, item.product_id, item.quantity, item.price, tenant_id]
             );
-            if (status === 'confirmed' || !status) {
-                const stockUpdate = await client.query(
-                    "UPDATE ecom_products SET stock = stock - $1 WHERE product_id = $2 AND stock >= $1 AND tenant_id = $3",
-                    [item.quantity, item.product_id, tenant_id]
-                );
-                if (stockUpdate.rowCount === 0) throw new Error(`Insufficient stock for Product ID: ${item.product_id}`);
-            }
+            
+            // Deduct stock immediately
+            const stockUpdate = await client.query(
+                "UPDATE ecom_products SET stock = stock - $1 WHERE product_id = $2 AND stock >= $1 AND tenant_id = $3",
+                [item.quantity, item.product_id, tenant_id]
+            );
+            if (stockUpdate.rowCount === 0) throw new Error(`Insufficient stock for Product ID: ${item.product_id}`);
         }
 
-        const pStatus = (status === 'confirmed' || !status) ? 'paid' : 'pending';
+        // Always paid since it's delivered
         await client.query(
             `INSERT INTO ecom_payments (order_id, payment_method, amount, amount_received, change_amount, payment_status, transaction_id, tenant_id)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-            [orderId, paymentMethod, total, paid_amount, change_amount, pStatus, transactionId || null, tenant_id]
+            [orderId, paymentMethod, total, paid_amount, change_amount, 'paid', transactionId || null, tenant_id]
         );
 
         await client.query('COMMIT');
         const fullOrder = await getOrderDetails(client, orderId, tenant_id);
-        return NextResponse.json({ success: true, message: 'Order placed successfully', payload: fullOrder }, { status: 201 });
+        return NextResponse.json({ success: true, message: 'Sale completed successfully', payload: fullOrder }, { status: 201 });
 
     } catch (error) {
         if (client) await client.query('ROLLBACK');
@@ -79,6 +86,9 @@ export async function POST(req) {
 export async function PUT(req) {
     const client = await pool.connect();
     try {
+        const auth = await isManagement();
+        if (!auth.success) return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
+
         const website = await getTenant();
         if (!website) return NextResponse.json({ success: false, message: 'Website/Tenant not found' }, { status: 404 });
         const tenant_id = website.tenant_id;
@@ -93,119 +103,26 @@ export async function PUT(req) {
         if (currentOrder.rowCount === 0) throw new Error("Order not found");
         const orderStatus = currentOrder.rows[0].status;
 
-        // ── CONFIRM: pending → confirmed, deduct stock, mark payment paid ────
-        if (action === 'confirm') {
-            if (orderStatus !== 'pending') throw new Error(`Cannot confirm an order with status: ${orderStatus}`);
-
-            const items = await client.query(
-                "SELECT product_id, quantity FROM ecom_order_items WHERE order_id = $1 AND tenant_id = $2",
-                [orderId, tenant_id]
-            );
-            for (const item of items.rows) {
-                const update = await client.query(
-                    "UPDATE ecom_products SET stock = stock - $1 WHERE product_id = $2 AND stock >= $1 AND tenant_id = $3",
-                    [item.quantity, item.product_id, tenant_id]
-                );
-                if (update.rowCount === 0) throw new Error("Insufficient stock to confirm order");
-            }
-            await client.query(
-                "UPDATE ecom_orders SET status = 'confirmed' WHERE order_id = $1 AND tenant_id = $2",
-                [orderId, tenant_id]
-            );
-            await client.query(
-                `UPDATE ecom_payments p 
-                 SET payment_status = 'paid', amount = o.total_amount, amount_received = o.total_amount 
-                 FROM ecom_orders o 
-                 WHERE p.order_id = o.order_id AND p.order_id = $1 AND p.tenant_id = $2`,
-                [orderId, tenant_id]
-            );
-            await client.query('COMMIT');
-            const fullOrder = await getOrderDetails(client, orderId, tenant_id);
-            return NextResponse.json({ success: true, message: 'Order confirmed & payment marked paid', payload: fullOrder });
-        }
-
-        // ── DIRECT DELIVER: pending → delivered, deduct stock, mark payment paid ────
-        if (action === 'direct_deliver') {
-            if (orderStatus !== 'pending') throw new Error(`Cannot direct deliver an order with status: ${orderStatus}`);
-
-            const items = await client.query(
-                "SELECT product_id, quantity FROM ecom_order_items WHERE order_id = $1 AND tenant_id = $2",
-                [orderId, tenant_id]
-            );
-            for (const item of items.rows) {
-                const update = await client.query(
-                    "UPDATE ecom_products SET stock = stock - $1 WHERE product_id = $2 AND stock >= $1 AND tenant_id = $3",
-                    [item.quantity, item.product_id, tenant_id]
-                );
-                if (update.rowCount === 0) throw new Error("Insufficient stock to deliver order");
-            }
-            await client.query(
-                "UPDATE ecom_orders SET status = 'delivered' WHERE order_id = $1 AND tenant_id = $2",
-                [orderId, tenant_id]
-            );
-            await client.query(
-                `UPDATE ecom_payments p 
-                 SET payment_status = 'paid', amount = o.total_amount, amount_received = o.total_amount 
-                 FROM ecom_orders o 
-                 WHERE p.order_id = o.order_id AND p.order_id = $1 AND p.tenant_id = $2`,
-                [orderId, tenant_id]
-            );
-            await client.query('COMMIT');
-            const fullOrder = await getOrderDetails(client, orderId, tenant_id);
-            return NextResponse.json({ success: true, message: 'Order delivered directly', payload: fullOrder });
-        }
-
-        // ── SHIP: confirmed → shipped ────────────────────────────────────────
-        if (action === 'ship') {
-            if (orderStatus !== 'confirmed') throw new Error(`Cannot ship an order with status: ${orderStatus}`);
-            await client.query(
-                "UPDATE ecom_orders SET status = 'shipped' WHERE order_id = $1 AND tenant_id = $2",
-                [orderId, tenant_id]
-            );
-            await client.query('COMMIT');
-            return NextResponse.json({ success: true, message: 'Order marked as shipped' });
-        }
-
-        // ── DELIVER: shipped → delivered ─────────────────────────────────────
-        if (action === 'deliver') {
-            if (orderStatus !== 'shipped') throw new Error(`Cannot deliver an order with status: ${orderStatus}`);
-            await client.query(
-                "UPDATE ecom_orders SET status = 'delivered' WHERE order_id = $1 AND tenant_id = $2",
-                [orderId, tenant_id]
-            );
-            await client.query(
-                `UPDATE ecom_payments p 
-                 SET payment_status = 'paid', amount = o.total_amount, amount_received = o.total_amount 
-                 FROM ecom_orders o 
-                 WHERE p.order_id = o.order_id AND p.order_id = $1 AND p.tenant_id = $2`,
-                [orderId, tenant_id]
-            );
-            await client.query('COMMIT');
-            return NextResponse.json({ success: true, message: 'Order marked as delivered' });
-        }
-
-        // ── CANCEL: pending or confirmed → cancelled ─────────────────────────
+        // ── CANCEL: delivered → cancelled (restore stock) ─────────────────────────
         if (action === 'cancel') {
-            if (!['pending', 'confirmed'].includes(orderStatus)) throw new Error(`Cannot cancel an order with status: ${orderStatus}`);
-            // Restore stock if it was already deducted (confirmed)
-            if (orderStatus === 'confirmed') {
-                const items = await client.query(
-                    "SELECT product_id, quantity FROM ecom_order_items WHERE order_id = $1 AND tenant_id = $2",
-                    [orderId, tenant_id]
+            if (orderStatus !== 'delivered') throw new Error(`Cannot cancel an order with status: ${orderStatus}`);
+            
+            const items = await client.query(
+                "SELECT product_id, quantity FROM ecom_order_items WHERE order_id = $1 AND tenant_id = $2",
+                [orderId, tenant_id]
+            );
+            for (const item of items.rows) {
+                await client.query(
+                    "UPDATE ecom_products SET stock = stock + $1 WHERE product_id = $2 AND tenant_id = $3",
+                    [item.quantity, item.product_id, tenant_id]
                 );
-                for (const item of items.rows) {
-                    await client.query(
-                        "UPDATE ecom_products SET stock = stock + $1 WHERE product_id = $2 AND tenant_id = $3",
-                        [item.quantity, item.product_id, tenant_id]
-                    );
-                }
             }
             await client.query(
                 "UPDATE ecom_orders SET status = 'cancelled' WHERE order_id = $1 AND tenant_id = $2",
                 [orderId, tenant_id]
             );
             await client.query('COMMIT');
-            return NextResponse.json({ success: true, message: 'Order cancelled' });
+            return NextResponse.json({ success: true, message: 'Order cancelled & stock restored' });
         }
 
         // ── RETURN: delivered → returned, restore stock, refund ──────────────
@@ -237,7 +154,10 @@ export async function PUT(req) {
 
         // ── DELETE: hard delete, restore stock if necessary ──────────────────
         if (action === 'delete') {
-            if (['confirmed', 'shipped', 'delivered'].includes(orderStatus)) {
+            const adminAuth = await isAdmin();
+            if (!adminAuth.success) throw new Error(adminAuth.message);
+
+            if (orderStatus === 'delivered') {
                 const items = await client.query(
                     "SELECT product_id, quantity FROM ecom_order_items WHERE order_id = $1 AND tenant_id = $2",
                     [orderId, tenant_id]
@@ -259,7 +179,7 @@ export async function PUT(req) {
         throw new Error("Invalid action provided");
 
     } catch (error) {
-        await client.query('ROLLBACK');
+        if (client) await client.query('ROLLBACK');
         return NextResponse.json({ success: false, message: error.message }, { status: 400 });
     } finally {
         client.release();
@@ -270,6 +190,9 @@ export async function PUT(req) {
 export async function GET() {
     const client = await pool.connect();
     try {
+        const auth = await isManagement();
+        if (!auth.success) return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
+
         const website = await getTenant();
         if (!website) return NextResponse.json({ success: false, message: 'Website/Tenant not found' }, { status: 404 });
         const tenant_id = website.tenant_id;

@@ -1,11 +1,15 @@
 import { pool } from "@/lib/database/db";
 import { getTenant } from "@/lib/database/tenant";
 import { NextResponse } from "next/server";
+import { isManagement } from "@/lib/middleware";
 
 // GET: Fetch all customers
 export async function GET() {
     const client = await pool.connect();
     try {
+        const auth = await isManagement();
+        if (!auth.success) return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
+
         const website = await getTenant();
         if (!website) {
             return NextResponse.json({ success: false, message: 'Website/Tenant not found' }, { status: 404 });
@@ -38,6 +42,9 @@ export async function GET() {
 export async function POST(req) {
     const client = await pool.connect();
     try {
+        const auth = await isManagement();
+        if (!auth.success) return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
+
         const website = await getTenant();
         if (!website) {
             return NextResponse.json({ success: false, message: 'Website/Tenant not found' }, { status: 404 });
@@ -92,4 +99,4 @@ export async function POST(req) {
     } finally {
         client.release();
     }
-}
+}

@@ -102,12 +102,8 @@ const DashboardSidebar = () => {
               </p>
             )}
             <MenuItem href="/dashboard/sales/pos" icon={RiShoppingCart2Line} label="POS System" isOpen={isOpen} />
-            <MenuItem href="/dashboard/sales/pendingorders" icon={RiAlertLine} label="Pending Orders" isOpen={isOpen} />
-            <MenuItem href="/dashboard/sales/confirmed-orders" icon={RiCheckboxCircleLine} label="Confirmed Orders" isOpen={isOpen} />
-            <MenuItem href="/dashboard/sales/shipped-orders" icon={RiTruckLine} label="Shipped Orders" isOpen={isOpen} />
             <MenuItem href="/dashboard/sales/sales-list" icon={RiShoppingBag3Line} label="Order History" isOpen={isOpen} />
             <MenuItem href="/dashboard/sales/sales-transactions" icon={TbReportMoney} label="Sales Transactions" isOpen={isOpen} />
-            <MenuItem href="/dashboard/sales/sale" icon={RiShoppingBag3Line} label="Sales" isOpen={isOpen} />
           </>
         )}
 

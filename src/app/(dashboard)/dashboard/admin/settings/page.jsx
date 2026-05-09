@@ -4,10 +4,10 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { 
   Save, Globe, Mail, Phone, MapPin, 
-  Facebook, Instagram, Linkedin, Youtube,
   Layout, Search, Palette, ShoppingBag, Loader2,
   CreditCard, Calendar, CheckCircle2, AlertCircle
 } from 'lucide-react'
+import { RiFacebookFill, RiInstagramLine, RiLinkedinBoxLine, RiYoutubeLine } from 'react-icons/ri'
 import { motion } from 'framer-motion'
 
 const SettingsPage = () => {
@@ -226,12 +226,12 @@ const SettingsPage = () => {
         </Section>
 
         {/* --- Social Links --- */}
-        <Section title="Social Presence" icon={<Facebook className="text-blue-600" />}>
+        <Section title="Social Presence" icon={<RiFacebookFill className="text-blue-600" size={24} />}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <SocialField icon={<Facebook size={18} />} label="Facebook" name="facebook" value={data.facebook} onChange={handleChange} />
-            <SocialField icon={<Instagram size={18} />} label="Instagram" name="instagram" value={data.instagram} onChange={handleChange} />
-            <SocialField icon={<Linkedin size={18} />} label="LinkedIn" name="linkedin" value={data.linkedin} onChange={handleChange} />
-            <SocialField icon={<Youtube size={18} />} label="YouTube" name="youtube" value={data.youtube} onChange={handleChange} />
+            <SocialField icon={<RiFacebookFill size={18} />} label="Facebook" name="facebook" value={data.facebook} onChange={handleChange} />
+            <SocialField icon={<RiInstagramLine size={18} />} label="Instagram" name="instagram" value={data.instagram} onChange={handleChange} />
+            <SocialField icon={<RiLinkedinBoxLine size={18} />} label="LinkedIn" name="linkedin" value={data.linkedin} onChange={handleChange} />
+            <SocialField icon={<RiYoutubeLine size={18} />} label="YouTube" name="youtube" value={data.youtube} onChange={handleChange} />
           </div>
         </Section>
 

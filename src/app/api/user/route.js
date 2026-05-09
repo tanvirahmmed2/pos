@@ -2,9 +2,16 @@ import { pool } from "@/lib/database/db";
 import { getTenant } from "@/lib/database/tenant";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { isAdmin } from "@/lib/middleware";
 
 export async function POST(req) {
     try {
+        // Only admin can create new accounts
+        const auth = await isAdmin();
+        if (!auth.success) {
+            return NextResponse.json({ success: false, message: auth.message }, { status: 403 });
+        }
+
         const website = await getTenant();
         if (!website) {
             return NextResponse.json({ success: false, message: 'Website/Tenant not found' }, { status: 404 });
@@ -32,7 +39,7 @@ export async function POST(req) {
 
             return NextResponse.json({
                 success: true,
-                message: "User registered successfully",
+                message: "User created successfully",
                 payload: result.rows[0]
             }, { status: 201 });
 
