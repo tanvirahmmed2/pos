@@ -28,38 +28,21 @@ export async function GET(req, { params }) {
                 o.total_discount_amount,
                 o.subtotal_amount,
                 o.status,
-                p.payment_status,
-                p.change_amount,
-                p.amount_received AS paid_amount,
                 o.created_at,
-                JSON_AGG(
-                    JSON_BUILD_OBJECT(
-                        'name', pr.name, 
-                        'quantity', oi.quantity,
-                        'price', oi.price,
-                        'sale_price', pr.sale_price, 
-                        'discount_price', pr.discount_price,
-                        'barcode', pr.barcode
-                    )
-                ) AS items
+                (SELECT JSON_AGG(p_item) FROM (
+                    SELECT payment_status, payment_method, amount_received, change_amount, transaction_id, paid_at
+                    FROM ecom_payments 
+                    WHERE order_id = o.order_id AND tenant_id = o.tenant_id
+                ) p_item) AS payments,
+                (SELECT JSON_AGG(oi_item) FROM (
+                    SELECT pr.name, oi.quantity, oi.price, pr.sale_price, pr.discount_price, pr.barcode
+                    FROM ecom_order_items oi
+                    JOIN ecom_products pr ON oi.product_id = pr.product_id
+                    WHERE oi.order_id = o.order_id AND oi.tenant_id = o.tenant_id
+                ) oi_item) AS items
             FROM ecom_orders o
             JOIN ecom_customers c ON o.customer_id = c.customer_id AND o.tenant_id = c.tenant_id
-            JOIN ecom_payments p ON o.order_id = p.order_id AND o.tenant_id = p.tenant_id
-            JOIN ecom_order_items oi ON o.order_id = oi.order_id AND o.tenant_id = oi.tenant_id
-            JOIN ecom_products pr ON oi.product_id = pr.product_id AND o.tenant_id = pr.tenant_id
             WHERE o.order_id = $1 AND o.tenant_id = $2
-            GROUP BY 
-                o.order_id, 
-                c.name, 
-                c.phone, 
-                o.total_amount,
-                o.total_discount_amount,
-                o.subtotal_amount,
-                o.status,
-                p.payment_status, 
-                p.change_amount, 
-                p.amount_received,
-                o.created_at
         `;
 
         const data = await pool.query(query, [id, tenant_id]);
@@ -71,9 +54,19 @@ export async function GET(req, { params }) {
             }, { status: 404 });
         }
 
+        const order = data.rows[0];
+        // Flatten for POS slip page compatibility
+        const payload = {
+            ...order,
+            payment_status: order.payments?.[0]?.payment_status,
+            payment_method: order.payments?.[0]?.payment_method,
+            paid_amount: order.payments?.[0]?.amount_received || 0,
+            change_amount: order.payments?.[0]?.change_amount || 0
+        };
+
         return NextResponse.json({
             success: true,
-            payload: data.rows[0] 
+            payload: payload
         }, { status: 200 });
 
     } catch (error) {
@@ -83,4 +76,4 @@ export async function GET(req, { params }) {
             message: "Internal Server Error" 
         }, { status: 500 });
     }
-}
+}

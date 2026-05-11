@@ -48,9 +48,7 @@ const POSSLIPPAGE = ({ params }) => {
     return (
         <div className="min-h-screen w-full flex flex-col items-center py-6 sm:py-12 px-4 print:p-0 print:bg-white overflow-x-hidden">
             
-            
             <div className="w-full max-w-150 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-5 sm:p-7 border border-slate-100 flex flex-col gap-4 print:shadow-none print:border-none print:w-full">
-                
                 
                 <header className="text-center space-y-1">
                     <h1 className="text-xl font-bold text-slate-900 leading-tight warp-break-word">{ siteData?.website_name || "Store Name"}</h1>
@@ -61,7 +59,6 @@ const POSSLIPPAGE = ({ params }) => {
                         <span className="text-[8px] font-bold uppercase tracking-[4px] text-slate-400 bg-white px-2 -mt-2 relative">Receipt</span>
                     </div>
                 </header>
-
 
                 <div className="space-y-1 text-[11px] font-mono text-slate-600">
                     <div className="flex justify-between uppercase">
@@ -78,7 +75,6 @@ const POSSLIPPAGE = ({ params }) => {
                     </div>
                 </div>
 
-
                 <div className="border-y border-dashed border-slate-200 py-3 my-1">
                     <div className="flex justify-between items-center gap-2">
                         <span className="text-xs font-bold text-slate-900 truncate uppercase tracking-tight">
@@ -89,7 +85,6 @@ const POSSLIPPAGE = ({ params }) => {
                         </span>
                     </div>
                 </div>
-
 
                 <div className="w-full">
                     <div className="grid grid-cols-12 gap-1 text-[11px] font-black uppercase text-slate-400 border-b pb-1 mb-2">
@@ -144,6 +139,15 @@ const POSSLIPPAGE = ({ params }) => {
                         <span>Change</span>
                         <span className="font-mono">৳{Number(order.change_amount || 0).toFixed(2)}</span>
                     </div>
+                </div>
+
+                {/* Barcode Section */}
+                <div className="mt-6 flex flex-col items-center gap-1">
+                    <img 
+                        src={`https://bwipjs-api.metafloor.com/?bcid=code128&text=${String(order.order_id).padStart(8, '0')}&scale=2&rotate=N&includetext`} 
+                        alt="Order Barcode" 
+                        className="max-w-full h-auto"
+                    />
                 </div>
 
                 {/* Footer */}

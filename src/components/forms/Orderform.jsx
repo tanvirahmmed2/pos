@@ -8,10 +8,10 @@ import { FaMinus, FaPlus } from 'react-icons/fa6'
 import BarScanner from '../helper/BarcodeScanner'
 import { FaBarcode } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
-import { ShoppingBag } from 'lucide-react'
+import { ShoppingBag, User } from 'lucide-react'
 
 const Orderform = ({ cartItems = [] }) => {
-    const { decreaseQuantity, clearCart, addToCart, removeFromCart, setCart, customers, setIsCustomerBox, siteData } = useContext(Context)
+    const { decreaseQuantity, clearCart, addToCart, removeFromCart, setCart, setIsCustomerBox, siteData } = useContext(Context)
     const [saleType, setSaleType] = useState('retail')
     const [products, setProducts] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
@@ -21,7 +21,7 @@ const Orderform = ({ cartItems = [] }) => {
     const [receivedAmount, setReceivedAmount] = useState(0)
 
     const [data, setData] = useState({
-        customer_id: '22',
+        phone: '',
         extradiscount: 0,
         subTotal: 0,
         totalDiscount: 0,
@@ -119,7 +119,6 @@ const Orderform = ({ cartItems = [] }) => {
     // Master Calculation Effect
     useEffect(() => {
         const subTotal = cartItems.reduce((sum, item) => {
-            // Priority: Manual price > default sale/wholesale price
             const itemPrice = item.price !== undefined ? item.price : (saleType === 'retail' ? item.sale_price : item.wholesale_price);
             return sum + (parseFloat(itemPrice) * (item.quantity || 0));
         }, 0)
@@ -148,7 +147,7 @@ const Orderform = ({ cartItems = [] }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (cartItems.length === 0) return toast.error("Cart is empty")
-        if (!data.customer_id) return toast.error("Please select a customer")
+        if (!data.phone) return toast.error("Please enter customer phone number")
 
         setReceivedAmount(data.totalPrice)
         setIsPaymentModal(true)
@@ -161,15 +160,12 @@ const Orderform = ({ cartItems = [] }) => {
 
     const finalConfirm = async () => {
         if (changeAmount < 0) {
-            toast.error("Received amount is less than total price");
-            return
+            const confirmPartial = window.confirm(`Received amount (৳${receivedAmount}) is less than Total (৳${data.totalPrice}). This will create a DUE of ৳${Math.abs(changeAmount)}. Proceed?`);
+            if (!confirmPartial) return;
         }
-        const selectedCustomer = customers.find(c => String(c.customer_id) === String(data.customer_id))
 
         const payload = {
-            customer_id: data.customer_id,
-            phone: selectedCustomer?.phone || '',
-            customerName: selectedCustomer?.name || '',
+            phone: data.phone,
             subtotal: data.subTotal,
             discount: data.totalDiscount + (parseFloat(data.extradiscount) || 0),
             total: data.totalPrice,
@@ -183,7 +179,6 @@ const Orderform = ({ cartItems = [] }) => {
             items: cartItems.map(item => ({
                 product_id: item.product_id,
                 quantity: item.quantity,
-                // Ensure we send the current price from state
                 price: item.price !== undefined ? item.price : (saleType === 'retail' ? item.sale_price : item.wholesale_price)
             }))
         }
@@ -191,14 +186,11 @@ const Orderform = ({ cartItems = [] }) => {
         try {
             const response = await axios.post('/api/order', payload, { withCredentials: true })
             toast.success(response.data.message)
-            // if (generateReceipt) generateReceipt(response.data.payload, siteData)
-            // console.log(response.data.payload)
-
 
             setIsPaymentModal(false)
             clearCart()
             setData({
-                customer_id: '22',
+                phone: '',
                 extradiscount: 0,
                 transactionId: '',
                 paymentMethod: 'cash',
@@ -218,31 +210,26 @@ const Orderform = ({ cartItems = [] }) => {
         <>
             <form onSubmit={handleSubmit} className='w-full flex flex-col gap-4 bg-white'>
                 <div className='flex flex-col gap-3'>
-                    <input
-                        type="date"
-                        name="createdAt"
-                        value={data.createdAt}
-                        onChange={handleChange}
-                        className='px-4 py-2 border border-slate-200 rounded-xl outline-none w-full bg-slate-50 focus:bg-white focus:border-primary transition-all text-sm font-medium'
-                    />
-
-                    <div className='flex items-center gap-2'>
-                        <select
-                            name="customer_id"
-                            id="customer_id"
-                            value={data.customer_id}
+                    <div className="grid grid-cols-2 gap-3">
+                        <input
+                            type="date"
+                            name="createdAt"
+                            value={data.createdAt}
                             onChange={handleChange}
-                            required
-                            className='flex-1 px-4 py-2 border border-slate-200 rounded-xl outline-none bg-slate-50 focus:bg-white focus:border-primary transition-all text-sm font-medium'
-                        >
-                            <option value="">-- select customer --</option>
-                            {customers.map((customer) => (
-                                <option value={customer.customer_id} key={customer.customer_id}>
-                                    {customer.name}
-                                </option>
-                            ))}
-                        </select>
-                        <button type='button' onClick={() => setIsCustomerBox(true)} className='w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 font-bold hover:bg-primary hover:text-white transition-all'>+</button>
+                            className='px-4 py-2 border border-slate-200 rounded-xl outline-none w-full bg-slate-50 focus:bg-white focus:border-primary transition-all text-sm font-medium'
+                        />
+                         <div className='flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl focus-within:border-primary focus-within:bg-white transition-all'>
+                            <User className='text-slate-400' size={16} />
+                            <input
+                                type="text"
+                                name="phone"
+                                placeholder="Customer Phone"
+                                value={data.phone}
+                                onChange={handleChange}
+                                required
+                                className='w-full bg-transparent outline-none text-sm font-medium'
+                            />
+                        </div>
                     </div>
                 </div>
 

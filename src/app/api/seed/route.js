@@ -12,7 +12,7 @@ export async function GET() {
         const tenant_id = website.tenant_id;
 
         const adminEmail = "admin@pos.com";
-        const adminPassword = "adminpassword123";
+        const adminPassword = "admin123";
         const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
         // Check if admin already exists

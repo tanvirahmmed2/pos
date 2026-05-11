@@ -164,6 +164,12 @@ const SalesListPage = () => {
                     <span className='text-[10px] font-black text-slate-900 uppercase tracking-wider'>Total Paid</span>
                     <span className='text-xl font-black text-slate-900'>৳{Number(order.paid_amount || order.amount_received || 0).toLocaleString()}</span>
                 </div>
+                {order.due_amount > 0 && (
+                    <div className='flex justify-between items-center text-red-600 font-bold'>
+                        <span className='text-[10px] uppercase tracking-wider'>Due</span>
+                        <span className='text-sm'>৳{Number(order.due_amount).toLocaleString()}</span>
+                    </div>
+                )}
             </div>
 
             {/* Actions */}

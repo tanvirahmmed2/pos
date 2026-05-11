@@ -78,7 +78,7 @@ export async function isManagement() {
     const user = await getAuthenticatedUser();
     if (!user) return { success: false, message: 'Please login' };
 
-    const managementRoles = ['admin', 'manager', 'sales'];
+    const managementRoles = ['admin', 'manager', 'sales', 'staff'];
     if (!managementRoles.includes(user.role)) {
         return { success: false, message: 'Access denied: Management roles only' };
     }

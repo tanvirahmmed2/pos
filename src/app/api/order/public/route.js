@@ -11,11 +11,13 @@ export async function POST(req) {
         }
         const tenant_id = website.tenant_id;
 
-        const { customerName, phone, items, subtotal, discount, total, paymentMethod, transactionId } = await req.json();
+        const body = await req.json();
+        const { customerName, phone, items, subtotal, discount, total, paymentMethod, transactionId, shippingAddress } = body;
 
         if (!phone) throw new Error("Phone number is required");
 
         await client.query('BEGIN');
+        
         let customer_id;
         const customerCheck = await client.query(
             "SELECT customer_id FROM ecom_customers WHERE phone = $1 AND tenant_id = $2",
@@ -34,10 +36,13 @@ export async function POST(req) {
         }
 
         // 2. Insert Order (Force status to 'pending')
+        const shipping_address = shippingAddress || 'Online Order / Delivery';
+        const due_amount = total; // Public order initially has full due until payment is confirmed
+
         const orderRes = await client.query(
-            `INSERT INTO ecom_orders (customer_id, phone, subtotal_amount, total_discount_amount, total_amount, status, tenant_id) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING order_id`,
-            [customer_id, phone, subtotal, discount, total, 'pending', tenant_id]
+            `INSERT INTO ecom_orders (customer_id, phone, shipping_address, subtotal_amount, total_discount_amount, total_amount, due_amount, status, tenant_id) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING order_id`,
+            [customer_id, phone, shipping_address, subtotal, discount, total, due_amount, 'pending', tenant_id]
         );
         const orderId = orderRes.rows[0].order_id;
 
@@ -63,10 +68,10 @@ export async function POST(req) {
         }, { status: 201 });
 
     } catch (error) {
-        await client.query('ROLLBACK');
-        console.error("Order Error:", error);
+        if (client) await client.query('ROLLBACK');
+        console.error("Public Order Error:", error);
         return NextResponse.json({ success: false, message: error.message }, { status: 500 });
     } finally {
         client.release();
     }
-}
+}

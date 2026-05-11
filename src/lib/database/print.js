@@ -257,19 +257,11 @@ export const generateReceipt = (order, siteData) => {
 
           /* BARCODE */
           .barcode-area { margin: 12px auto 0; text-align: center; }
-          .barcode-lines {
-            display: inline-flex;
-            align-items: flex-end;
-            gap: 1px;
-            height: 26px;
-            margin-bottom: 3px;
-          }
-          .bar { background: #1a1a2e; display: inline-block; }
-          .barcode-number {
-            font-family: 'DM Mono', monospace;
-            font-size: 7.5px;
-            color: #9ca3af;
-            letter-spacing: 3px;
+          .barcode-img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
           }
 
           /* FOOTER */
@@ -373,14 +365,11 @@ export const generateReceipt = (order, siteData) => {
         </div>
 
         <div class="barcode-area">
-          <div class="barcode-lines">
-            ${Array.from({ length: 44 }, (_, i) => {
-              const h = [18,24,16,28,20,14,26,22,18,28,12,24,20,16,28,18,22,14,26,20,18,28,16,24,20,18,12,26,22,28,14,20,18,24,16,28,22,18,26,14,20,24,16,22][i];
-              const w = [1,2,1,3,1,2,1,1,2,3,1,2,1,1,3,1,2,1,3,1,2,3,1,2,1,2,1,3,2,3,1,2,1,2,1,3,2,1,3,1,2,2,1,2][i];
-              return `<span class="bar" style="height:${h}px;width:${w}px;"></span>`;
-            }).join('')}
-          </div>
-          <div class="barcode-number">${String(order.order_id).padStart(12, '0')}</div>
+          <img 
+            src="https://bwipjs-api.metafloor.com/?bcid=code128&text=${String(order.order_id).padStart(8, '0')}&scale=2&rotate=N&includetext" 
+            alt="Order Barcode" 
+            class="barcode-img"
+          />
         </div>
 
         <div class="footer">

@@ -2,14 +2,10 @@ import { pool } from "@/lib/database/db";
 import { getTenant } from "@/lib/database/tenant";
 import { NextResponse } from "next/server";
 
-// Public endpoint — no auth required
-// Query by:  ?orderId=123   OR   ?phone=01700000000
 export async function GET(req) {
     try {
         const website = await getTenant();
-        if (!website) {
-            return NextResponse.json({ success: false, message: 'Store not found' }, { status: 404 });
-        }
+        if (!website) return NextResponse.json({ success: false, message: 'Store not found' }, { status: 404 });
         const tenant_id = website.tenant_id;
 
         const { searchParams } = new URL(req.url);
@@ -17,69 +13,50 @@ export async function GET(req) {
         const phone   = searchParams.get('phone')?.trim();
 
         if (!orderId && !phone) {
-            return NextResponse.json(
-                { success: false, message: 'Please provide an Order ID or phone number.' },
-                { status: 400 }
-            );
+            return NextResponse.json({ success: false, message: 'Please provide an Order ID or phone number.' }, { status: 400 });
         }
 
-        // Base query — returns one or many orders depending on search type
-        const baseSelect = `
+        const query = `
             SELECT 
-                o.order_id,
-                o.subtotal_amount,
-                o.total_discount_amount,
-                o.total_amount,
-                o.status,
-                o.created_at,
-                c.name   AS customer_name,
-                c.phone  AS customer_phone,
-                p.payment_method,
-                p.payment_status,
-                p.amount_received AS paid_amount,
-                JSON_AGG(
-                    JSON_BUILD_OBJECT(
-                        'name',     pr.name,
-                        'image',    pr.image,
-                        'quantity', oi.quantity,
-                        'price',    oi.price
-                    ) ORDER BY pr.name
-                ) AS items
+                o.order_id, o.subtotal_amount, o.total_discount_amount, o.total_amount, o.status, o.created_at, o.due_amount,
+                c.name AS customer_name, c.phone AS customer_phone,
+                (SELECT JSON_AGG(p_item) FROM (
+                    SELECT payment_method, payment_status, amount_received AS paid_amount
+                    FROM ecom_payments 
+                    WHERE order_id = o.order_id AND tenant_id = o.tenant_id
+                ) p_item) AS payments,
+                (SELECT JSON_AGG(oi_item) FROM (
+                    SELECT pr.name, pr.image, oi.quantity, oi.price
+                    FROM ecom_order_items oi
+                    JOIN ecom_products pr ON oi.product_id = pr.product_id
+                    WHERE oi.order_id = o.order_id AND oi.tenant_id = o.tenant_id
+                ) oi_item) AS items
             FROM ecom_orders o
-            JOIN ecom_customers   c  ON o.customer_id  = c.customer_id  AND o.tenant_id = c.tenant_id
-            JOIN ecom_payments    p  ON o.order_id     = p.order_id     AND o.tenant_id = p.tenant_id
-            JOIN ecom_order_items oi ON o.order_id     = oi.order_id    AND o.tenant_id = oi.tenant_id
-            JOIN ecom_products    pr ON oi.product_id  = pr.product_id  AND o.tenant_id = pr.tenant_id
+            JOIN ecom_customers c ON o.customer_id = c.customer_id AND o.tenant_id = c.tenant_id
+            WHERE o.tenant_id = $1 AND (${orderId ? 'o.order_id = $2' : 'c.phone = $2'})
+            ORDER BY o.created_at DESC
         `;
 
-        let query, values;
-
-        if (orderId) {
-            query = `${baseSelect}
-                WHERE o.order_id = $1 AND o.tenant_id = $2
-                GROUP BY o.order_id, c.name, c.phone, p.payment_method, p.payment_status, p.amount_received`;
-            values = [orderId, tenant_id];
-        } else {
-            // Phone search — return all orders for that phone, newest first
-            query = `${baseSelect}
-                WHERE c.phone = $1 AND o.tenant_id = $2
-                GROUP BY o.order_id, c.name, c.phone, p.payment_method, p.payment_status, p.amount_received
-                ORDER BY o.created_at DESC`;
-            values = [phone, tenant_id];
-        }
-
+        const values = [tenant_id, orderId || phone];
         const { rows } = await pool.query(query, values);
 
         if (rows.length === 0) {
-            return NextResponse.json(
-                { success: false, message: orderId ? 'No order found with that ID.' : 'No orders found for that phone number.' },
-                { status: 404 }
-            );
+            return NextResponse.json({
+                success: false, 
+                message: orderId ? 'No order found with that ID.' : 'No orders found for that phone number.'
+            }, { status: 404 });
         }
+
+        const formattedRows = rows.map(row => ({
+            ...row,
+            payment_method: row.payments?.[0]?.payment_method,
+            payment_status: row.payments?.[0]?.payment_status,
+            paid_amount: row.payments?.[0]?.paid_amount || 0
+        }));
 
         return NextResponse.json({
             success: true,
-            payload: orderId ? rows[0] : rows   // single object vs array
+            payload: orderId ? formattedRows[0] : formattedRows
         }, { status: 200 });
 
     } catch (error) {

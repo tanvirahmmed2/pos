@@ -20,47 +20,50 @@ export async function GET(req) {
                 o.total_discount_amount,
                 o.subtotal_amount,
                 o.status,
-                p.payment_status,
-                p.change_amount,
-                p.amount_received AS paid_amount,
                 o.created_at,
-                JSON_AGG(
-                    JSON_BUILD_OBJECT(
-                        'name', pr.name, 
-                        'quantity', oi.quantity,
-                        'price', oi.price,
-                        'sale_price', pr.sale_price, 
-                        'discount_price', pr.discount_price,
-                        'barcode', pr.barcode
-                    )
-                ) AS items
+                (SELECT JSON_AGG(p_item) FROM (
+                    SELECT payment_status, amount_received, change_amount, payment_method
+                    FROM ecom_payments 
+                    WHERE order_id = o.order_id AND tenant_id = o.tenant_id
+                ) p_item) AS payments,
+                (SELECT JSON_AGG(oi_item) FROM (
+                    SELECT pr.name, oi.quantity, oi.price, pr.sale_price, pr.discount_price, pr.barcode
+                    FROM ecom_order_items oi
+                    JOIN ecom_products pr ON oi.product_id = pr.product_id
+                    WHERE oi.order_id = o.order_id AND oi.tenant_id = o.tenant_id
+                ) oi_item) AS items
             FROM ecom_orders o
-            JOIN ecom_customers c    ON o.customer_id = c.customer_id AND o.tenant_id = c.tenant_id
-            JOIN ecom_payments p     ON o.order_id    = p.order_id    AND o.tenant_id = p.tenant_id
-            JOIN ecom_order_items oi ON o.order_id    = oi.order_id   AND o.tenant_id = oi.tenant_id
-            JOIN ecom_products pr    ON oi.product_id = pr.product_id AND o.tenant_id = pr.tenant_id
-            WHERE o.status = 'delivered' AND o.tenant_id = $3 AND (
+            JOIN ecom_customers c ON o.customer_id = c.customer_id AND o.tenant_id = c.tenant_id
+            WHERE o.tenant_id = $3 AND (
                 c.phone ILIKE $1 OR 
                 c.name ILIKE $1 OR 
-                pr.name ILIKE $1 OR 
-                pr.barcode = $2 OR 
                 CAST(o.order_id AS TEXT) = $2 OR
-                CAST(o.created_at AS TEXT) ILIKE $1
+                CAST(o.created_at AS TEXT) ILIKE $1 OR
+                EXISTS (
+                    SELECT 1 FROM ecom_order_items oi
+                    JOIN ecom_products pr ON oi.product_id = pr.product_id
+                    WHERE oi.order_id = o.order_id AND (pr.name ILIKE $1 OR pr.barcode = $2)
+                )
             )
-            GROUP BY 
-                o.order_id, c.name, c.phone,
-                o.total_amount, o.total_discount_amount, o.subtotal_amount, o.status,
-                p.payment_status, p.change_amount, p.amount_received, o.created_at
             ORDER BY o.created_at DESC
         `;
 
         const data = await pool.query(query, [`%${searchTerm}%`, searchTerm, tenant_id]);
 
-        if (data.rows.length === 0) {
-            return NextResponse.json({ success: false, message: 'No delivered orders found' }, { status: 404 });
+        const formattedRows = data.rows.map(row => ({
+            ...row,
+            payment_status: row.payments?.[0]?.payment_status,
+            payment_method: row.payments?.[0]?.payment_method,
+            paid_amount: row.payments?.[0]?.amount_received || 0,
+            amount_received: row.payments?.[0]?.amount_received || 0,
+            change_amount: row.payments?.[0]?.change_amount || 0
+        }));
+
+        if (formattedRows.length === 0) {
+            return NextResponse.json({ success: false, message: 'No orders found' }, { status: 404 });
         }
 
-        return NextResponse.json({ success: true, payload: data.rows }, { status: 200 });
+        return NextResponse.json({ success: true, payload: formattedRows }, { status: 200 });
 
     } catch (error) {
         console.error("Search Error:", error.message);
